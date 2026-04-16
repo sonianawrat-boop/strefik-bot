@@ -1,0 +1,268 @@
+```html
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+    --primary-dark: #457B9D;
+    --primary-light: #A8DADC;
+    --bg-light: #F1FAEE;
+}
+
+/* ❌ usuwamy fixed widget */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* ✅ stały kontener */
+#chat-container {
+    width: 100%;
+    max-width: 420px;
+    height: 100vh;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+}
+
+/* header */
+#chat-header {
+    background: var(--primary-dark);
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+}
+
+/* wiadomości */
+#chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: var(--bg-light);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.msg {
+    padding: 10px;
+    border-radius: 12px;
+    max-width: 80%;
+}
+
+.bot-msg { background: #e9ecef; }
+.user-msg {
+    background: var(--primary-light);
+    align-self: flex-end;
+}
+
+/* footer */
+#chat-footer {
+    padding: 10px;
+    border-top: 1px solid #eee;
+}
+
+/* przyciski */
+.quick-row {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.quick-btn {
+    border: 1px solid var(--primary-dark);
+    padding: 6px 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    background: white;
+}
+
+/* input */
+.input-row {
+    display: flex;
+    gap: 5px;
+}
+
+#chat-input {
+    flex: 1;
+    padding: 6px;
+}
+
+#send-btn {
+    background: var(--primary-dark);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+}
+
+/* typing */
+#typing {
+    font-size: 12px;
+    color: gray;
+    padding-left: 10px;
+    display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div id="chat-container">
+
+    <div id="chat-header">
+        Strefik 🤖
+    </div>
+
+    <div id="chat-messages">
+        <div class="msg bot-msg">
+            Cześć! 😊 Wybierz opcję poniżej lub napisz wiadomość.
+        </div>
+    </div>
+
+    <div id="typing">Strefik pisze...</div>
+
+    <div id="chat-footer">
+
+        <!-- 🔥 PRZYCISKI -->
+        <div class="quick-row">
+            <button class="quick-btn" onclick="quick('menu')">🍽️ Menu</button>
+            <button class="quick-btn" onclick="quick('plan dnia')">📅 Plan dnia</button>
+            <button class="quick-btn" onclick="quick('plan tygodnia')">📆 Plan tygodnia</button>
+            <button class="quick-btn" onclick="quick('płatności')">💳 Płatności</button>
+        </div>
+
+        <!-- INPUT -->
+        <div class="input-row">
+            <input id="chat-input" placeholder="Napisz wiadomość...">
+            <button id="send-btn">Wyślij</button>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+const messages = document.getElementById('chat-messages');
+const input = document.getElementById('chat-input');
+const typing = document.getElementById('typing');
+
+function addMsg(text, type) {
+    const div = document.createElement('div');
+    div.className = 'msg ' + (type === 'user' ? 'user-msg' : 'bot-msg');
+    div.innerText = text;
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+}
+
+function botResponse(text) {
+    const lower = text.toLowerCase();
+
+    if (lower.includes("menu")) {
+        return `🍽️ MENU:
+
+Poniedziałek:
+🥣 Owsianka
+🍲 Pomidorowa + makaron
+🍎 Jabłko + biszkopty
+
+Wtorek:
+🥣 Kanapki + kakao
+🍲 Rosół + kurczak
+🍌 Banan + jogurt
+
+Środa:
+🥣 Płatki + mleko
+🍲 Jarzynowa + ryż
+🍓 Truskawki
+
+Czwartek:
+🥣 Jajecznica
+🍲 Krupnik + kotlet
+🍊 Pomarańcza
+
+Piątek:
+🥣 Parówki
+🍲 Ogórkowa + ryba
+🍐 Gruszka`;
+    }
+
+    if (lower.includes("plan dnia")) {
+        return `📅 PLAN DNIA:
+08:00 Śniadanie
+09:00 Zajęcia
+11:00 Spacer
+12:00 Obiad
+13:00 Odpoczynek
+15:00 Odbiór`;
+    }
+
+    if (lower.includes("plan tygodnia")) {
+        return `📆 PLAN TYGODNIA:
+Pon - plastyka
+Wt - rytmika
+Śr - angielski
+Czw - ruch
+Pt - zabawy`;
+    }
+
+    if (lower.includes("plan tygodnia")) {
+        return `📆 PLAN:
+Pon - plastyka
+Wt - rytmika
+Śr - angielski`;
+    }
+
+    if (lower.includes("płat")) {
+        return "Podaj kod klienta 💳";
+    }
+
+    // kod klienta
+    if (/^\d{3,6}$/.test(lower)) {
+
+        if (lower === "1234") return "Płatność opłacona ✅";
+        if (lower === "9999") return "Zaległość 200 zł ⚠️";
+
+        return "Nie znaleziono klienta ❌";
+    }
+
+    return "Nie rozumiem 🤔";
+}
+
+function send() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMsg(text, 'user');
+    input.value = "";
+    typing.style.display = 'block';
+
+    setTimeout(() => {
+        typing.style.display = 'none';
+        addMsg(botResponse(text), 'bot');
+    }, 800);
+}
+
+function quick(text) {
+    addMsg(text, 'user');
+    typing.style.display = 'block';
+
+    setTimeout(() => {
+        typing.style.display = 'none';
+        addMsg(botResponse(text), 'bot');
+    }, 800);
+}
+
+document.getElementById('send-btn').onclick = send;
+input.addEventListener("keypress", e => {
+    if (e.key === "Enter") send();
+});
+</script>
+
+</body>
+</html>
+```
