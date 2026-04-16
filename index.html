@@ -6,107 +6,55 @@ Sonia Nawrat, Katarzyna Sojka
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-:root {
-    --primary-dark: #457B9D;
-    --primary-light: #A8DADC;
-    --bg-light: #F1FAEE;
-}
+body { margin:0; font-family: Arial; }
 
-/* ❌ usuwamy fixed widget */
-body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-}
-
-/* ✅ stały kontener */
 #chat-container {
-    width: 100%;
-    max-width: 380px;
-    height: 100vh;
+    max-width: 420px;
+    height: 95vh;
     margin: auto;
     display: flex;
     flex-direction: column;
     border: 1px solid #ddd;
 }
 
-/* header */
 #chat-header {
-    background: var(--primary-dark);
+    background: #457B9D;
     color: white;
     padding: 15px;
-    font-weight: bold;
 }
 
-/* wiadomości */
 #chat-messages {
     flex: 1;
     padding: 15px;
     overflow-y: auto;
-    background: var(--bg-light);
+    background: #F1FAEE;
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.msg {
-    padding: 10px;
-    border-radius: 12px;
-    max-width: 80%;
-}
+.msg { padding:10px; border-radius:10px; max-width:80%; }
+.bot-msg { background:#eee; }
+.user-msg { background:#A8DADC; align-self:flex-end; }
 
-.bot-msg { background: #e9ecef; }
-.user-msg {
-    background: var(--primary-light);
-    align-self: flex-end;
-}
+#chat-footer { padding:10px; }
 
-/* footer */
-#chat-footer {
-    padding: 10px;
-    border-top: 1px solid #eee;
-}
-
-/* przyciski */
-.quick-row {
-    display: flex;
-    gap: 5px;
-    flex-wrap: wrap;
-    margin-bottom: 8px;
-}
+.quick-row { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:5px; }
 
 .quick-btn {
-    border: 1px solid var(--primary-dark);
-    padding: 6px 10px;
-    border-radius: 15px;
-    cursor: pointer;
-    background: white;
+    border:1px solid #457B9D;
+    padding:5px 10px;
+    border-radius:15px;
+    background:white;
+    cursor:pointer;
 }
 
-/* input */
-.input-row {
-    display: flex;
-    gap: 5px;
-}
+.input-row { display:flex; gap:5px; }
 
-#chat-input {
-    flex: 1;
-    padding: 6px;
-}
+#chat-input { flex:1; padding:5px; }
+#send-btn { background:#457B9D; color:white; border:none; padding:5px 10px; }
 
-#send-btn {
-    background: var(--primary-dark);
-    color: white;
-    border: none;
-    padding: 6px 12px;
-}
-
-/* typing */
-#typing {
-    font-size: 12px;
-    color: gray;
-    padding-left: 10px;
-    display: none;
-}
+#typing { font-size:12px; color:gray; display:none; }
 </style>
 </head>
 
@@ -114,45 +62,40 @@ body {
 
 <div id="chat-container">
 
-    <div id="chat-header">
-        Strefik ChatBOT🤖
-    </div>
+<div id="chat-header">Strefik ChatBOT 🤖</div>
 
-    <div id="chat-messages">
-        <div class="msg bot-msg">
-            Dzień dobry! 😊  Jestem Strefik. W czym mogę Ci dzisiaj pomóc?
+<div id="chat-messages">
+<div class="msg bot-msg">
+Chronimy dane Twojego dziecka jak skarb. 🛡️<br><br>
+Cześć! Możesz zapytać o menu, plan dnia, wydarzenia lub płatności.
+</div>
+</div>
 
-            
-            Pamiętaj! Chronimy dane Twojego dziecka jak skarb!
-        </div>
-    </div>
+<div id="typing">Strefik pisze...</div>
 
-    <div id="typing">Strefik pisze...</div>
+<div id="chat-footer">
 
-    <div id="chat-footer">
+<div class="quick-row">
+<button class="quick-btn" onclick="quick('menu')">🍽️ Menu</button>
+<button class="quick-btn" onclick="quick('plan dnia')">📅 Plan dnia</button>
+<button class="quick-btn" onclick="quick('wydarzenia')">📢 Wydarzenia</button>
+<button class="quick-btn" onclick="quick('płatności')">💳 Płatności</button>
+</div>
 
-        <!-- 🔥 PRZYCISKI -->
-        <div class="quick-row">
-            <button class="quick-btn" onclick="quick('menu')">🍽️ Menu</button>
-            <button class="quick-btn" onclick="quick('plan dnia')">📅 Plan dnia</button>
-            <button class="quick-btn" onclick="quick('plan tygodnia')">📆 Plan tygodnia</button>
-            <button class="quick-btn" onclick="quick('płatności')">💳 Płatności</button>
-        </div>
+<div class="input-row">
+<input id="chat-input" placeholder="Napisz wiadomość...">
+<button id="send-btn">Wyślij</button>
+</div>
 
-        <!-- INPUT -->
-        <div class="input-row">
-            <input id="chat-input" placeholder="Napisz wiadomość...">
-            <button id="send-btn">Wyślij</button>
-        </div>
-
-    </div>
-
+</div>
 </div>
 
 <script>
 const messages = document.getElementById('chat-messages');
 const input = document.getElementById('chat-input');
 const typing = document.getElementById('typing');
+
+let waitingForCode = false;
 
 function addMsg(text, type) {
     const div = document.createElement('div');
@@ -165,8 +108,9 @@ function addMsg(text, type) {
 function botResponse(text) {
     const lower = text.toLowerCase();
 
-    if (lower.includes("menu")) {
-        return `🍽️ MENU:
+    // MENU
+    if (lower.includes("menu") || lower.includes("obiad")) {
+        return `🍽️ MENU TYGODNIOWE:
 
 Poniedziałek:
 🥣 Owsianka
@@ -194,46 +138,53 @@ Piątek:
 🍐 Gruszka`;
     }
 
-    if (lower.includes("plan dnia")) {
-        return `📅 PLAN DNIA:
+    // PLAN DNIA
+    if (lower.includes("plan dnia") || lower.includes("zajęcia")) {
+        return `📅 PLAN DNIA (8:00–15:00):
+
 08:00 Śniadanie
-09:00 Zajęcia
-11:00 Spacer
-12:00 Obiad
-13:00 Odpoczynek
-15:00 Odbiór`;
+09:00 Zajęcia dydaktyczne
+10:30 Zajęcia sportowe
+11:30 Spacer
+12:30 Obiad
+13:30 Odpoczynek
+14:30 Zajęcia dodatkowe`;
     }
 
-    if (lower.includes("plan tygodnia")) {
-        return `📆 PLAN TYGODNIA:
-Pon - plastyka
-Wt - rytmika
-Śr - angielski
-Czw - ruch
-Pt - zabawy`;
+    // WYDARZENIA
+    if (lower.includes("wydarzenia") || lower.includes("zebranie")) {
+        return `📢 WYDARZENIA (miesiąc):
+
+10.05 – Zebranie rodziców
+15.05 – Wycieczka
+20.05 – Dzień sportu
+25.05 – Warsztaty plastyczne`;
     }
 
-    if (lower.includes("plan tygodnia")) {
-        return `📆 PLAN:
-Pon - plastyka
-Wt - rytmika
-Śr - angielski`;
-    }
-
+    // PŁATNOŚCI
     if (lower.includes("płat")) {
+        waitingForCode = true;
         return "Podaj kod klienta 💳";
     }
 
-    // kod klienta
-    if (/^\d{3,6}$/.test(lower)) {
+    // obsługa kodu
+    if (waitingForCode && /^\d{3,6}$/.test(lower)) {
+        waitingForCode = false;
 
-        if (lower === "1234") return "Płatność opłacona ✅";
-        if (lower === "9999") return "Zaległość 200 zł ⚠️";
-
-        return "Nie znaleziono klienta ❌";
+        if (Math.random() > 0.5) {
+            return "Na podstawie podanego kodu: płatności są uregulowane ✅";
+        } else {
+            const amount = Math.floor(Math.random() * 200 + 50);
+            return `Pozostała kwota do zapłaty: ${amount} zł ⚠️`;
+        }
     }
 
-    return "Nie rozumiem 🤔";
+    // bezpieczeństwo
+    if (lower.includes("dziecko") || lower.includes("dane")) {
+        return "Ze względów bezpieczeństwa mogę udostępnić tylko podstawowe informacje.";
+    }
+
+    return "Nie rozumiem 🤔 Możesz zapytać o menu, plan dnia, wydarzenia lub płatności.";
 }
 
 function send() {
@@ -247,7 +198,7 @@ function send() {
     setTimeout(() => {
         typing.style.display = 'none';
         addMsg(botResponse(text), 'bot');
-    }, 800);
+    }, 700);
 }
 
 function quick(text) {
@@ -257,7 +208,7 @@ function quick(text) {
     setTimeout(() => {
         typing.style.display = 'none';
         addMsg(botResponse(text), 'bot');
-    }, 800);
+    }, 700);
 }
 
 document.getElementById('send-btn').onclick = send;
