@@ -9,7 +9,7 @@ Sonia Nawrat, Katarzyna Sojka
 body { margin:0; font-family: Arial; }
 
 #chat-container {
-    max-width: 420px;
+    max-width: 430px;
     height: 95vh;
     margin: auto;
     display: flex;
@@ -33,7 +33,7 @@ body { margin:0; font-family: Arial; }
     gap: 10px;
 }
 
-.msg { padding:10px; border-radius:10px; max-width:80%; }
+.msg { padding:10px; border-radius:10px; max-width:90%; }
 .bot-msg { background:#eee; }
 .user-msg { background:#A8DADC; align-self:flex-end; }
 
@@ -51,8 +51,18 @@ body { margin:0; font-family: Arial; }
 
 .input-row { display:flex; gap:5px; }
 
-#chat-input { flex:1; padding:5px; }
-#send-btn { background:#457B9D; color:white; border:none; padding:5px 10px; }
+#chat-input {
+    flex:1;
+    padding:5px;
+    resize:none;
+}
+
+#send-btn {
+    background:#457B9D;
+    color:white;
+    border:none;
+    padding:5px 10px;
+}
 
 #typing { font-size:12px; color:gray; display:none; }
 </style>
@@ -62,12 +72,14 @@ body { margin:0; font-family: Arial; }
 
 <div id="chat-container">
 
-<div id="chat-header">Strefik ChatBOT 🤖</div>
+<div id="chat-header">Strefik ChatBOT🤖</div>
 
 <div id="chat-messages">
 <div class="msg bot-msg">
-Chronimy dane Twojego dziecka jak skarb. 🛡️<br><br>
-Cześć! Możesz zapytać o menu, plan dnia, wydarzenia lub płatności.
+Chronimy dane Twojego dziecka jak skarb. 🛡️
+
+Wybierz kim jesteś:
+Rodzic / Nauczyciel / Admin
 </div>
 </div>
 
@@ -80,10 +92,11 @@ Cześć! Możesz zapytać o menu, plan dnia, wydarzenia lub płatności.
 <button class="quick-btn" onclick="quick('plan dnia')">📅 Plan dnia</button>
 <button class="quick-btn" onclick="quick('wydarzenia')">📢 Wydarzenia</button>
 <button class="quick-btn" onclick="quick('płatności')">💳 Płatności</button>
+<button class="quick-btn" onclick="quick('logout')">🚪 Wyloguj</button>
 </div>
 
 <div class="input-row">
-<input id="chat-input" placeholder="Napisz wiadomość...">
+<textarea id="chat-input" rows="2" placeholder="Napisz wiadomość..."></textarea>
 <button id="send-btn">Wyślij</button>
 </div>
 
@@ -95,23 +108,12 @@ const messages = document.getElementById('chat-messages');
 const input = document.getElementById('chat-input');
 const typing = document.getElementById('typing');
 
+let userRole = null;
+let editMode = null;
 let waitingForCode = false;
 
-function addMsg(text, type) {
-    const div = document.createElement('div');
-    div.className = 'msg ' + (type === 'user' ? 'user-msg' : 'bot-msg');
-    div.innerText = text;
-    messages.appendChild(div);
-    messages.scrollTop = messages.scrollHeight;
-}
-
-function botResponse(text) {
-    const lower = text.toLowerCase();
-
-    // MENU
-    if (lower.includes("menu") || lower.includes("obiad")) {
-        return `🍽️ MENU TYGODNIOWE:
-
+// dane
+let menuData = `🍽️ MENU:
 Poniedziałek:
 🥣 Owsianka
 🍲 Pomidorowa + makaron
@@ -136,29 +138,118 @@ Piątek:
 🥣 Parówki
 🍲 Ogórkowa + ryba
 🍐 Gruszka`;
-    }
 
-    // PLAN DNIA
-    if (lower.includes("plan dnia") || lower.includes("zajęcia")) {
-        return `📅 PLAN DNIA (8:00–15:00):
-
+let planData = `📅 PLAN DNIA:
 08:00 Śniadanie
-09:00 Zajęcia dydaktyczne
-10:30 Zajęcia sportowe
-11:30 Spacer
-12:30 Obiad
-13:30 Odpoczynek
-14:30 Zajęcia dodatkowe`;
-    }
+09:00 Zajęcia
+11:00 Spacer
+12:00 Obiad
+13:00 Odpoczynek
+15:00 Odbiór`;
 
-    // WYDARZENIA
-    if (lower.includes("wydarzenia") || lower.includes("zebranie")) {
-        return `📢 WYDARZENIA (miesiąc):
-
+let eventData = `📢 WYDARZENIA:
 10.05 – Zebranie rodziców
 15.05 – Wycieczka
 20.05 – Dzień sportu
 25.05 – Warsztaty plastyczne`;
+
+function addMsg(text, type) {
+    const div = document.createElement('div');
+    div.className = 'msg ' + (type === 'user' ? 'user-msg' : 'bot-msg');
+    div.innerText = text;
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+}
+
+function botResponse(text) {
+    const lower = text.toLowerCase();
+
+    // 🔥 LOGOUT (działa zawsze)
+    if (lower === "logout") {
+        userRole = null;
+        editMode = null;
+        waitingForCode = false;
+
+        return `Wylogowano ✅
+
+Wybierz kim jesteś:
+Rodzic / Nauczyciel / Admin`;
+    }
+
+    // WYBÓR ROLI
+    if (!userRole) {
+        if (lower.includes("rodzic")) {
+            userRole = "rodzic";
+            return "Tryb: Rodzic 👨‍👩‍👧";
+        }
+        if (lower.includes("nauczyciel")) {
+            userRole = "nauczyciel";
+            return "Tryb: Nauczyciel 👩‍🏫 (możesz edytować plan i wydarzenia)";
+        }
+        if (lower.includes("admin")) {
+            userRole = "admin";
+            return "Tryb: Admin 🧑‍💼 (możesz edytować menu)";
+        }
+        return "Wpisz: Rodzic / Nauczyciel / Admin";
+    }
+
+    // 🔥 KOMENDY EDYCJI (NAPRAWA BUGA)
+    if (lower === "edytuj menu" && userRole === "admin") {
+        editMode = "menu";
+        return "Wpisz nowe menu:";
+    }
+
+    if (lower === "edytuj plan" && userRole === "nauczyciel") {
+        editMode = "plan";
+        return "Wpisz nowy plan:";
+    }
+
+    if (lower === "edytuj wydarzenia" && userRole === "nauczyciel") {
+        editMode = "event";
+        return "Wpisz nowe wydarzenia:";
+    }
+
+    // TRYB EDYCJI
+    if (editMode) {
+        if (editMode === "menu") {
+            menuData = text;
+            editMode = null;
+            return "Menu zapisane ✅";
+        }
+        if (editMode === "plan") {
+            planData = text;
+            editMode = null;
+            return "Plan zapisany ✅";
+        }
+        if (editMode === "event") {
+            eventData = text;
+            editMode = null;
+            return "Wydarzenia zapisane ✅";
+        }
+    }
+
+    // MENU
+    if (lower.includes("menu")) {
+        if (userRole === "admin") {
+            return menuData + "\n\nNapisz: edytuj menu";
+        }
+        return menuData;
+    }
+
+    // PLAN
+    if (lower.includes("plan")) {
+        if (userRole === "nauczyciel") {
+            return planData + "\n\nNapisz: edytuj plan";
+        }
+        return planData;
+    }
+
+    // WYDARZENIA
+    if (lower.includes("wydarzenia")) {
+        if (userRole === "nauczyciel") {
+            return eventData + "\n\nNapisz: edytuj wydarzenia";
+        }
+        return eventData;
     }
 
     // PŁATNOŚCI
@@ -167,24 +258,22 @@ Piątek:
         return "Podaj kod klienta 💳";
     }
 
-    // obsługa kodu
     if (waitingForCode && /^\d{3,6}$/.test(lower)) {
         waitingForCode = false;
 
         if (Math.random() > 0.5) {
             return "Na podstawie podanego kodu: płatności są uregulowane ✅";
         } else {
-            const amount = Math.floor(Math.random() * 200 + 50);
-            return `Pozostała kwota do zapłaty: ${amount} zł ⚠️`;
+            return "Pozostała kwota do zapłaty: 150 zł ⚠️";
         }
     }
 
-    // bezpieczeństwo
+    // BEZPIECZEŃSTWO
     if (lower.includes("dziecko") || lower.includes("dane")) {
         return "Ze względów bezpieczeństwa mogę udostępnić tylko podstawowe informacje.";
     }
 
-    return "Nie rozumiem 🤔 Możesz zapytać o menu, plan dnia, wydarzenia lub płatności.";
+    return "Nie rozumiem 🤔";
 }
 
 function send() {
@@ -198,7 +287,7 @@ function send() {
     setTimeout(() => {
         typing.style.display = 'none';
         addMsg(botResponse(text), 'bot');
-    }, 700);
+    }, 600);
 }
 
 function quick(text) {
@@ -208,13 +297,18 @@ function quick(text) {
     setTimeout(() => {
         typing.style.display = 'none';
         addMsg(botResponse(text), 'bot');
-    }, 700);
+    }, 600);
 }
 
-document.getElementById('send-btn').onclick = send;
-input.addEventListener("keypress", e => {
-    if (e.key === "Enter") send();
+// ENTER = WYŚLIJ | SHIFT+ENTER = NOWA LINIA
+input.addEventListener("keydown", function(e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        send();
+    }
 });
+
+document.getElementById('send-btn').onclick = send;
 </script>
 
 </body>
