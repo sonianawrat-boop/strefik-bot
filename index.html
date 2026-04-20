@@ -9,12 +9,9 @@
         :root {
             --mint: #A8DADC;
             --blue: #457B9D;
-            --dark-blue: #1D3557;
-            --strefik-red: #d63384;
-            --strefik-yellow: #ffca28;
+            --dark: #1D3557;
             --white: #FFFFFF;
-            --light-bg: #F8FDFF;
-            --text: #444;
+            --light-bg: #F9FCFC;
             --shadow: 0 10px 30px rgba(0,0,0,0.08);
             --transition: all 0.3s ease;
         }
@@ -28,57 +25,54 @@
         body {
             font-family: 'Quicksand', sans-serif;
             line-height: 1.6;
-            color: var(--text);
+            color: var(--dark);
             background-color: var(--white);
             scroll-behavior: smooth;
-            overflow-x: hidden;
         }
 
-        h1, h2, h3, .logo-text {
+        h1, h2, h3, .logo {
             font-family: 'Fredoka', sans-serif;
         }
 
-        /* Nawigacja */
+        section {
+            padding: 100px 10%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.98);
-            padding: 0.5rem 5%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 10%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        .nav-logo-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .logo {
+            font-size: 1.8rem;
+            color: var(--blue);
             text-decoration: none;
-        }
-
-        .nav-logo-img {
-            height: 50px;
-            width: auto;
-        }
-
-        .logo-text {
-            font-size: 1.5rem;
             font-weight: 700;
-            color: var(--dark-blue);
         }
 
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 2rem;
+            gap: 1.5rem;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: var(--text);
+            color: var(--dark);
             font-weight: 600;
             transition: var(--transition);
         }
@@ -87,142 +81,263 @@
             color: var(--blue);
         }
 
-        /* Hero Section */
+        /* Hero */
         .hero {
-            min-height: 100vh;
-            background: radial-gradient(circle at top right, #fdfcfb 0%, #e2ebf0 100%);
+            height: 100vh;
+            background: linear-gradient(135deg, #f0f9f9 0%, #e0f2f1 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 120px 10% 60px;
             text-align: center;
+            padding-top: 80px;
         }
 
-        .hero-content {
-            max-width: 900px;
-        }
-
-        .hero-main-logo {
-            max-width: 350px;
-            width: 100%;
-            margin-bottom: 2rem;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
-            animation: float 4s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            color: var(--dark-blue);
+        .hero-content h1 {
+            font-size: 4rem;
             margin-bottom: 1rem;
+            color: var(--dark);
         }
 
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2.5rem;
+        .hero-content p {
+            font-size: 1.5rem;
             color: var(--blue);
+            margin-bottom: 2rem;
             font-weight: 500;
         }
 
-        /* Przyciski */
         .btn {
             display: inline-block;
-            padding: 1.2rem 2.5rem;
-            background-color: var(--blue);
+            padding: 1rem 2.5rem;
+            background: var(--blue);
             color: white;
             text-decoration: none;
             border-radius: 50px;
             font-weight: 700;
             transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(69, 123, 157, 0.3);
             border: none;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(69, 123, 157, 0.3);
         }
 
         .btn:hover {
-            transform: scale(1.05);
-            background-color: var(--dark-blue);
+            transform: translateY(-3px);
+            background: var(--dark);
         }
 
-        .btn-alt {
-            background-color: var(--strefik-yellow);
-            color: var(--dark-blue);
-            margin-left: 1rem;
+        /* Common Heading Style */
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
         }
 
-        /* O Nas z drugim logo */
-        section { padding: 100px 10%; }
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--dark);
+        }
 
-        .about-container {
+        .section-title .underline {
+            width: 80px;
+            height: 5px;
+            background: var(--mint);
+            margin: 10px auto 0;
+            border-radius: 10px;
+        }
+
+        /* O Nas */
+        .about-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 5%;
+            gap: 4rem;
             align-items: center;
         }
 
-        .about-image-box {
-            background: var(--light-bg);
-            padding: 40px;
-            border-radius: 40px;
+        /* Oferta & Cards */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
             text-align: center;
         }
 
-        .strefik-mascot {
-            max-width: 100%;
-            height: auto;
+        .card:hover {
+            transform: translateY(-10px);
         }
 
-        /* Oferta */
-        .offer-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-top: 3rem;
+        .card h3 {
+            color: var(--blue);
+            margin-bottom: 1rem;
         }
-
-        .offer-card {
-            background: white;
-            padding: 40px;
-            border-radius: 30px;
-            box-shadow: var(--shadow);
-            border-bottom: 8px solid var(--mint);
-            transition: var(--transition);
-        }
-
-        .offer-card:hover { transform: translateY(-10px); }
-        .offer-card.preschool { border-bottom-color: var(--strefik-yellow); }
 
         /* Plan Dnia */
-        .schedule-box {
+        .schedule-list {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--light-bg);
+            padding: 2rem;
+            border-radius: 30px;
+        }
+
+        .schedule-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px dashed var(--mint);
+        }
+
+        .schedule-item:last-child { border-bottom: none; }
+        .schedule-item span:first-child { font-weight: 700; color: var(--blue); }
+
+        /* Kadra */
+        .staff-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1.5rem;
+            border: 5px solid var(--mint);
+        }
+
+        /* Grupy */
+        .groups-section {
+            background: var(--light-bg);
+        }
+
+        .group-box {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 20px;
+            border-left: 10px solid var(--mint);
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Galeria */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .gallery-grid img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 20px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .gallery-grid img:hover {
+            filter: brightness(0.8);
+            transform: scale(1.02);
+        }
+
+        /* Adaptacja */
+        .adaptation-list {
+            list-style: none;
             max-width: 800px;
             margin: 0 auto;
+        }
+
+        .adaptation-list li {
+            padding: 1rem;
+            margin-bottom: 10px;
             background: #fff;
-            border-radius: 30px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
 
-        .schedule-row {
+        .adaptation-list li::before {
+            content: "✨";
+            margin-right: 15px;
+        }
+
+        /* Opinie */
+        .reviews-section { background: var(--blue); color: white; }
+        .reviews-section h2 { color: white; }
+        .review-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            padding: 2rem;
+            border-radius: 25px;
+            font-style: italic;
+        }
+
+        /* Lokalizacja i Kontakt */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 300px;
+            background: #eee;
+            border-radius: 20px;
             display: flex;
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid #f0f0f0;
+            align-items: center;
+            justify-content: center;
         }
 
-        .schedule-row:nth-child(even) { background: #fafafa; }
-
-        .time-tag {
-            font-weight: 700;
-            color: var(--blue);
-            width: 150px;
-            flex-shrink: 0;
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
 
-        /* Chat Bot Floating Button (Nawiązanie do Twojej grafiki) */
+        input, textarea {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 15px;
+            border: 2px solid #eee;
+            font-family: inherit;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--mint);
+        }
+
+        footer {
+            width: 100%;
+  background: var(--dark);
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+  margin: 0;
+
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .about-grid, .contact-container { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 2.5rem; }
+            section { padding: 60px 5%; }
+        }
+		.nav-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            text-decoration: none;
+        }
+
+        .nav-logo-img {
+            height: 50px;
+            width: auto;
+			}
+ /* Chat Bot Floating Button (Nawiązanie do Twojej grafiki) */
         .chatbot-bubble {
             position: fixed;
             bottom: 30px;
@@ -272,7 +387,7 @@
         }
 
         footer {
-            background: var(--dark-blue);
+            background: var(--dark);
             color: white;
             padding: 40px 10%;
             text-align: center;
@@ -451,140 +566,257 @@ textarea {
 .tooltip:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
-}
+  }
     </style>
 </head>
 <body>
 
-    <!-- Nawigacja -->
     <nav>
-        <a href="#" class="nav-logo-container">
+	  <a href="#" class="nav-logo-container">
             <img src="logo-glowne.png" alt="Strefikowo Logo" class="nav-logo-img">
-            <span class="logo-text">Strefikowo</span>
+            <span class="logo">Strefikowo</span>
         </a>
+		  
         <ul class="nav-links">
-            <li><a href="#about">O nas</a></li>
-            <li><a href="#offer">Oferta</a></li>
-            <li><a href="#schedule">Plan dnia</a></li>
-            <li><a href="#contact">Kontakt</a></li>
+            <li><a href="#o-nas">O nas</a></li>
+			<li><a href="#chatbot">Strefik</a></li>
+            <li><a href="#oferta">Oferta</a></li>
+            <li><a href="#plan">Plan dnia</a></li>
+			 <li><a href="#kadra">Kadra</a></li>
+			 <li><a href="#grupy">Grupy</a></li>
+			  <li><a href="#galeria">Galeria</a></li>
+			   <li><a href="#adaptacja">Adaptacja</a></li>
+			    <li><a href="#opinie">Opinie</a></li>
+            <li><a href="#kontakt">Kontakt</a></li>
+			
         </ul>
-        <a href="#contact" class="btn" style="padding: 0.7rem 1.5rem;">Zapisy 2026</a>
+        <a href="#kontakt" class="btn" style="padding: 0.6rem 1.2rem;">Zapisz dziecko</a>
     </nav>
-
-    <!-- Sekcja Hero -->
+<!-- Sekcja Hero -->
     <section class="hero">
         <div class="hero-content">
             <img src="logo-glowne.png" alt="Strefikowo" class="hero-main-logo">
             <h1>Bezpieczna przestrzeń dla dziecka</h1>
             <p>Profesjonalna opieka i radosna edukacja w sercu naszego miasta</p>
+ 
+            <a href="#kontakt" class="btn">Zapisz dziecko</a>
+        </div>
+    </section>
+
+    <section id="o-nas">
+        <div class="section-title">
+            <h2>O Nas</h2>
+            <div class="underline"></div>
+        </div>
+        <div class="about-grid">
             <div>
-                <a href="#offer" class="btn">Poznaj naszą ofertę</a>
-                <a href="#contact" class="btn btn-alt">Umów wizytę</a>
+                <h3>Drugi dom dla maluchów</h3>
+                <p>Strefikowo to nowoczesna placówka dedykowana dzieciom w wieku od 1 do 6 lat. Naszą misją jest tworzenie środowiska, w którym każde dziecko czuje się bezpieczne, kochane i zainspirowane do odkrywania świata.</p>
+                <p style="margin-top: 1rem;">Wykorzystujemy elementy pedagogiki <strong>Montessori</strong>, kładąc nacisk na samodzielność i naturalny rozwój. Jesteśmy partnerem dla pracujących rodziców, oferując pełne wsparcie i elastyczność.</p>
+            </div>
+            <img src="https://images.unsplash.com/photo-1540479859555-17af45c78602?auto=format&fit=crop&q=80&w=600" alt="Dzieci" style="width: 100%; border-radius: 30px; box-shadow: var(--shadow);">
+        </div>
+    </section>
+	
+	 <section id="chatbot">
+<div class="hero">
+
+  <div class="hero-content">
+
+    <!-- LEWA STRONA (LOGO) -->
+    <div class="hero-left">
+      <img src="logo-strefik.png" alt="Strefik ChatBot">
+    </div>
+
+    <!-- PRAWA STRONA (TEKST) -->
+    <div class="hero-right">
+      <h1>Strefik ChatBOT 🤖</h1>
+      <p>
+        Szybko sprawdzisz menu, plan dnia, wydarzenia i płatności.
+        Bez dzwonienia — wszystko w jednym miejscu.
+      </p>
+
+     
+    </div>
+
+  </div>
+
+</div>
+   
+    </section>
+    <section id="oferta" style="background: var(--light-bg);">
+        <div class="section-title">
+            <h2>Nasza Oferta</h2>
+            <div class="underline"></div>
+        </div>
+        <div class="grid-cards">
+            <div class="card">
+                <h3>👶 Żłobek</h3>
+                <p>(1–3 lata)</p>
+                <p>Ciepła opieka, stymulacja sensoryczna i łagodne wprowadzanie w świat rówieśników.</p>
+            </div>
+            <div class="card">
+                <h3>🎨 Przedszkole</h3>
+                <p>(3–6 lat)</p>
+                <p>Edukacja przedszkolna, przygotowanie do szkoły i rozwijanie talentów artystycznych.</p>
+            </div>
+            <div class="card">
+                <h3>⚽ Zajęcia dodatkowe</h3>
+                <p>W cenie czesnego:</p>
+                <p>Język angielski, gimnastyka korekcyjna, warsztaty ceramiczne.</p>
             </div>
         </div>
     </section>
 
-    <!-- O Nas -->
-    <section id="about">
-        <div class="about-container">
-            <div class="about-image-box">
-                <!-- Drugie logo wykorzystane jako element wizualny -->
-                <img src="logo-strefik.png" alt="Strefik" class="strefik-mascot">
-                <p style="margin-top: 15px; font-weight: 600; color: var(--blue);">Poznaj Strefika – naszego opiekuna radosnej nauki!</p>
+    <section id="plan">
+        <div class="section-title">
+            <h2>Plan Dnia</h2>
+            <div class="underline"></div>
+        </div>
+        <div class="schedule-list">
+            <div class="schedule-item"><span>08:00 – 09:00</span><span>Przyjście dzieci i zabawy swobodne</span></div>
+            <div class="schedule-item"><span>09:00 – 09:30</span><span>I Śniadanie</span></div>
+            <div class="schedule-item"><span>09:30 – 11:30</span><span>Zajęcia edukacyjne / Ogród</span></div>
+            <div class="schedule-item"><span>11:30 – 12:00</span><span>II Śniadanie / Owoce</span></div>
+            <div class="schedule-item"><span>12:00 – 14:00</span><span>Relaksacja / Drzemka / Bajkoterapia</span></div>
+            <div class="schedule-item"><span>14:00 – 15:00</span><span>Obiad i przygotowanie do powrotu</span></div>
+        </div>
+    </section>
+	
+<section id="kadra" style="background: var(--light-bg);">
+        <div class="section-title">
+            <h2>Kadra Dydaktyczna</h2>
+            <div class="underline"></div>
+        </div>
+        <div class="grid-cards">
+            <div class="card">
+                <img src="https://i.pravatar.cc/150?u=1" class="staff-img" alt="Kadra">
+                <h3>Anna Kowalska</h3>
+                <p><strong>Dyrektor pedagogiczny</strong></p>
+                <p>Specjalista pedagogiki przedszkolnej z 15-letnim doświadczeniem.</p>
             </div>
-            <div>
-                <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">Miejsce, które dzieci kochają</h2>
-                <p>W Strefikowie stawiamy na <strong>bezpieczeństwo, rozwój i zabawę</strong>. Nasza placówka łączy funkcję żłobka i przedszkola, zapewniając dzieciom płynne przejście między etapami edukacji.</p>
-                <ul style="list-style: none; margin-top: 20px;">
-                    <li>🌟 Metoda Montessori w codziennych zajęciach</li>
-                    <li>🎨 Warsztaty kreatywne i artystyczne</li>
-                    <li>🇬🇧 Język angielski przez zabawę</li>
-                </ul>
+            <div class="card">
+                <img src="https://i.pravatar.cc/150?u=2" class="staff-img" alt="Kadra">
+                <h3>Marek Nowak</h3>
+                <p><strong>Instruktor sportu</strong></p>
+                <p>Pasjonat ruchu, dba o rozwój motoryczny naszych podopiecznych.</p>
+            </div>
+            <div class="card">
+                <img src="https://i.pravatar.cc/150?u=3" class="staff-img" alt="Kadra">
+                <h3>Julia Wiśniewska</h3>
+                <p><strong>Nauczyciel Montessori</strong></p>
+                <p>Certyfikowany opiekun, skupiony na budowaniu samodzielności u dzieci.</p>
+            </div>
+        </div>
+    </section>
+	
+ <section id="grupy">
+    <section class="groups-section">
+        <div class="section-title">
+            <h2>Nasze Grupy</h2>
+            <div class="underline"></div>
+        </div>
+        <div class="container" style="max-width: 600px;">
+            <div class="group-box">
+                <span>🧸 <strong>Grupa "Maluszki"</strong> (Żłobek)</span>
+                <span>max. 15 dzieci</span>
+            </div>
+            <div class="group-box">
+                <span>🚀 <strong>Grupa "Odkrywcy"</strong> (Przedszkole)</span>
+                <span>max. 20 dzieci</span>
+            </div>
+            <div class="group-box">
+                <span>🎨 <strong>Grupa "Twórcy"</strong> (Przedszkole Starsze)</span>
+                <span>max. 20 dzieci</span>
             </div>
         </div>
     </section>
 
-    <!-- Oferta -->
-    <section id="offer" style="background-color: var(--light-bg);">
-        <h2 style="text-align: center; margin-bottom: 3rem;">Nasza Oferta</h2>
-        <div class="offer-grid">
-            <div class="offer-card">
-                <h3 style="color: var(--blue); font-size: 1.8rem;">Żłobek</h3>
-                <p style="margin: 10px 0;"><strong>Wiek: 1 – 3 lata</strong></p>
-                <p>Zapewniamy troskliwą opiekę i stymulację sensoryczną dla najmłodszych w bezpiecznych, przytulnych salach.</p>
-            </div>
-            <div class="offer-card preschool">
-                <h3 style="color: var(--strefik-red); font-size: 1.8rem;">Przedszkole</h3>
-                <p style="margin: 10px 0;"><strong>Wiek: 3 – 6 lat</strong></p>
-                <p>Skupiamy się na przygotowaniu do szkoły, rozwijaniu kompetencji społecznych i odkrywaniu talentów.</p>
-            </div>
+    <section id="galeria">
+        <div class="section-title">
+            <h2>Galeria</h2>
+            <div class="underline"></div>
+        </div>
+        <div class="gallery-grid">
+            <img src="https://verdeavis.pl/media/magefan_blog/sala-w-przedszkolu.jpeg" alt="Sala">
+            <img src="https://spil.pl/wp-content/uploads/2023/05/bezpieczny-plac-zabaw.jpg" alt="Plac zabaw">
+            <img src="https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&q=80&w=400" alt="Ogród">
+            <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&q=80&w=400" alt="Dzieci">
+			<img src="https://www.newseria.pl/files/_uploaded/glownekonf_899979056,w_580,_small.jpg" alt="Sala">
+        </div>
+    </section>
+  <section id="adaptacja">
+    <section style="background: var(--light-bg);">
+        <div class="section-title">
+            <h2>Adaptacja</h2>
+            <div class="underline"></div>
+        </div>
+        <ul class="adaptation-list">
+            <li><strong>Stopniowe przyzwyczajanie:</strong> Pierwsze dni trwają krócej, aby dziecko powoli poznawało nowe otoczenie.</li>
+            <li><strong>Obecność rodzica:</strong> Zachęcamy rodziców do wspólnej zabawy w sali w pierwszych dniach procesu.</li>
+            <li><strong>Indywidualne podejście:</strong> Każdy proces adaptacji dostosowujemy do emocji i tempa dziecka.</li>
+            <li><strong>Przedmiot z domu:</strong> Pozwalamy na przynoszenie ulubionej przytulanki, która daje poczucie bezpieczeństwa.</li>
+        </ul>
+    </section>
+  <section id="opinie">
+    <section class="reviews-section">
+        <div class="section-title">
+            <h2>Opinie Rodziców</h2>
+            <div class="underline" style="background: white;"></div>
+        </div>
+        <div class="grid-cards">
+            <div class="review-card">"Cudowne miejsce! Mój syn zaadoptował się w tydzień, a panie są niesamowicie cierpliwe i ciepłe."</div>
+            <div class="review-card">"Bardzo cenimy podejście Montessori. Widzimy ogromny postęp w samodzielności naszej córki."</div>
+            <div class="review-card">"Zajęcia dodatkowe są świetnie zorganizowane. Angielski przez zabawę to strzał w dziesiątkę!"</div>
         </div>
     </section>
 
-    <!-- Plan Dnia -->
-    <section id="schedule">
-        <h2 style="text-align: center; margin-bottom: 3rem;">Rytm Dnia w Strefikowie</h2>
-        <div class="schedule-box">
-            <div class="schedule-row">
-                <div class="time-tag">08:00 – 09:00</div>
-                <div>Powitanie dzieci i zabawy swobodne</div>
-            </div>
-            <div class="schedule-row">
-                <div class="time-tag">09:00 – 10:00</div>
-                <div>Zdrowe śniadanie i higiena</div>
-            </div>
-            <div class="schedule-row">
-                <div class="time-tag">10:00 – 12:00</div>
-                <div>Blok edukacyjny, spacer lub ogród</div>
-            </div>
-            <div class="schedule-row">
-                <div class="time-tag">12:00 – 13:00</div>
-                <div>Domowy obiad</div>
-            </div>
-            <div class="schedule-row">
-                <div class="time-tag">13:00 – 14:30</div>
-                <div>Odpoczynek, bajkoterapia, drzemka</div>
-            </div>
-            <div class="schedule-row" style="border: none;">
-                <div class="time-tag">14:30 – 16:00</div>
-                <div>Podwieczorek i zajęcia dodatkowe</div>
-            </div>
-        </div>
-    </section>
+    <section id="kontakt">
+       <div>
 
-    <!-- Kontakt -->
-    <section id="contact">
-        <div class="contact-wrapper">
-            <div>
-                <h2>Skontaktuj się z nami</h2>
-                <p style="margin: 1.5rem 0;">Chcesz zobaczyć naszą placówkę? Zapraszamy na dzień otwarty!</p>
-                <p><strong>📍 Adres:</strong> ul. Kolorowa 12, Miasto</p>
-                <p><strong>📞 Telefon:</strong> +48 500 600 700</p>
-                <p><strong>📧 Email:</strong> biuro@strefikowo.pl</p>
+  <div class="map-container">
+    <iframe 
+      src="https://www.google.com/maps?q=Wrocław&output=embed"
+      width="100%" 
+      height="300" 
+      style="border:0;" 
+      allowfullscreen="" 
+      loading="lazy">
+    </iframe>
+  </div>
+
+  <div style="margin-top: 1.5rem;">
+    <p><strong>Dojazd:</strong> Nasza placówka znajduje się w cichej dzielnicy, blisko przystanku linii 102. Posiadamy własny parking dla rodziców.</p>
+    
+    <p style="margin-top: 1rem;">📞 +48 123 456 789</p>
+    <p>📧 kontakt@strefikowo.pl</p>
+  </div>
+
+</div>
+                </div>
             </div>
-            <form class="contact-form">
-                <input type="text" placeholder="Imię rodzica" required>
-                <input type="email" placeholder="E-mail" required>
-                <textarea rows="4" placeholder="W czym możemy pomóc?"></textarea>
-                <button type="submit" class="btn">Wyślij zapytanie</button>
+            <form class="form-group">
+                <input type="text" placeholder="Twoje imię" required>
+                <input type="email" placeholder="Twój e-mail" required>
+                <textarea rows="5" placeholder="Wiadomość do nas..." required></textarea>
+                <button type="submit" class="btn">Wyślij wiadomość</button>
             </form>
         </div>
     </section>
+	
+	
+	
+<!-- Floating Chat Bot Element -->
 
-    <!-- Floating Chat Bot Element -->
-  <div class="chatbot-bubble" id="open-chat">
-    <span class="chat-label">Chat</span>
-    <span style="font-weight: 700; color: var(--dark-blue);">Bot</span>
-    <img src="logo-strefik.png" style="height: 30px;">
+ <div class="chatbot-button" id="chat-button">
+   
+    <img src="logo-strefik.png" style="height: 70px;">
 </div>
 
-    <footer>
-        <img src="logo-glowne.png" alt="Logo" style="height: 60px; margin-bottom: 20px;">
-        <p>&copy; 2026 Strefikowo — Daycare & Preschool. Wszystkie prawa zastrzeżone.</p>
-    </footer>
 
-
-
+	
+	
+	
 <!-- CHAT WINDOW -->
 <div id="chat-window">
   
@@ -644,6 +876,10 @@ textarea {
 </div>
 
 
+ <footer>
+        <p>&copy; 2026 Strefikowo — Żłobek i Przedszkole. Zapraszamy do nas!
+		<br><strong>Made by: Sonia Nawrat, Katarzyna Sojka</p></strong>
+    </footer>
 </script>
 <script>
 const messages = document.getElementById('chat-messages');
@@ -853,7 +1089,7 @@ input.addEventListener("keydown", function(e) {
 document.getElementById('send-btn').onclick = send;
 </script>
 <script>
-const openChat = document.getElementById("open-chat");
+const openChat = document.getElementById("chat-button");
 const chatWindow = document.getElementById("chat-window");
 const closeBtn = document.getElementById("close-chat");
 
