@@ -14,6 +14,7 @@
             --light-bg: #F9FCFC;
             --shadow: 0 10px 30px rgba(0,0,0,0.08);
             --transition: all 0.3s ease;
+            --strefik-yellow: #FFD166;
         }
 
         * {
@@ -22,16 +23,25 @@
             box-sizing: border-box;
         }
 
+        /* Poprawione body dla trzymania footera na dole */
         body {
             font-family: 'Quicksand', sans-serif;
             line-height: 1.6;
             color: var(--dark);
             background-color: var(--white);
             scroll-behavior: smooth;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         h1, h2, h3, .logo {
             font-family: 'Fredoka', sans-serif;
+        }
+
+        /* Główny kontener na treść, by footer mógł być pod nim */
+        main {
+            flex: 1;
         }
 
         section {
@@ -124,7 +134,6 @@
             background: var(--dark);
         }
 
-        /* Common Heading Style */
         .section-title {
             text-align: center;
             margin-bottom: 4rem;
@@ -273,7 +282,7 @@
             font-style: italic;
         }
 
-        /* Lokalizacja i Kontakt */
+        /* Kontakt */
         .contact-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -304,41 +313,21 @@
             font-family: inherit;
         }
 
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: var(--mint);
-        }
-
-        footer {
-            width: 100%;
-  background: var(--dark);
-  color: white;
-  text-align: center;
-  padding: 40px 20px;
-  margin: 0;
-
-        }
-
-        /* Responsiveness */
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .about-grid, .contact-container { grid-template-columns: 1fr; }
-            .hero-content h1 { font-size: 2.5rem; }
-            section { padding: 60px 5%; }
-        }
-		.nav-logo-container {
+        /* Nav logo */
+        .nav-logo-container {
             display: flex;
             align-items: center;
-            gap: 2px;
+            gap: 10px;
             text-decoration: none;
         }
 
         .nav-logo-img {
             height: 50px;
             width: auto;
-			}
- /* Chat Bot Floating Button (Nawiązanie do Twojej grafiki) */
-        .chatbot-bubble {
+        }
+
+        /* Chat Bot Floating Button */
+        #chat-button {
             position: fixed;
             bottom: 30px;
             right: 30px;
@@ -353,574 +342,388 @@
             z-index: 9999;
             transition: var(--transition);
             border: 2px solid var(--strefik-yellow);
+            cursor: pointer;
         }
 
-        .chatbot-bubble:hover { transform: scale(1.1); }
-        
-        .chat-label {
-            background: #c1272d;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 700;
-        }
+        #chat-button:hover { transform: scale(1.1); }
 
-        /* Kontakt */
-        .contact-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-        }
-
-        .contact-form {
-            display: flex;
+        /* WINDOW */
+        #chat-window {
+            position: fixed;
+            bottom: 110px;
+            right: 30px;
+            width: 320px;
+            height: 480px;
+            background: white;
+            border-radius: 16px;
+            display: none;
             flex-direction: column;
-            gap: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
         }
 
-        .contact-form input, .contact-form textarea {
-            padding: 15px;
-            border-radius: 15px;
-            border: 2px solid #eee;
-            font-family: inherit;
+        #chat-header {
+            background: linear-gradient(135deg,#A8DADC,#457B9D);
+            color: #1D3557;
+            padding: 12px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
+        #chat-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            background: #f7f9fc;
+        }
+
+        .msg {
+            max-width: 75%;
+            padding: 10px;
+            margin: 6px 0;
+            border-radius: 12px;
+            animation: slideUp 0.3s ease;
+            word-wrap: break-word;
+        }
+
+        .bot-msg { background: #eaeef3; }
+        .user-msg { background: #457B9D; color: white; margin-left: auto; }
+
+        #typing { font-size: 12px; padding: 5px 10px; display: none; color: #888; }
+
+        #chat-footer { padding: 8px; background: #fff; border-top: 1px solid #eee; }
+
+        .quick-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+        .quick-row button { border: none; background: #f0f4f8; padding: 6px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .quick-row button:hover { background: #A8DADC; }
+
+        .input-row { display: flex; }
+        .input-row textarea { flex: 1; resize: none; border-radius: 8px; border: 1px solid #ddd; padding: 6px; height: 40px; }
+        #send-btn { background: #457B9D; color: white; border: none; padding: 0 12px; margin-left: 5px; border-radius: 8px; cursor: pointer; }
+
+        /* FOOTER - Poprawiony */
         footer {
-            background: var(--dark);
+            width: 100%;
+            background: linear-gradient(135deg, #1D3557, #457B9D);
             color: white;
-            padding: 40px 10%;
             text-align: center;
+            padding: 50px 20px;
+            margin-top: auto;
         }
 
-        /* Mobile */
+        /* Tooltip */
+        .tooltip { position: relative; display: inline-block; }
+        .tooltip-text {
+            visibility: hidden; background: #333; color: #fff; text-align: center; padding: 5px 8px;
+            border-radius: 6px; font-size: 12px; position: absolute; bottom: 120%; left: 50%;
+            transform: translateX(-50%); opacity: 0; transition: 0.2s; white-space: nowrap;
+        }
+        .tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
+
+        @keyframes fadeIn { from {opacity: 0; transform: translateY(10px);} to {opacity: 1; transform: translateY(0);} }
+        @keyframes slideUp { from {opacity: 0; transform: translateY(5px);} to {opacity: 1; transform: translateY(0);} }
+
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            .about-container, .offer-grid, .contact-wrapper { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 2.2rem; }
+            .about-grid, .contact-container { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 2.5rem; }
+            section { padding: 60px 5%; }
         }
-		
-/* BUTTON */
-#chat-button {
-   position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            z-index: 9999;
-            transition: var(--transition);
-            border: 2px solid var(--strefik-yellow);
-}
-#chat-button:hover {
-  transform: scale(1.1);
-}
-
-/* WINDOW */
-#chat-window {
-  position: fixed;
-  bottom: 130px;
-  right: 20px;
-  width: 320px;
-  height: 480px;
-  background: white;
-  border-radius: 16px;
-  display: none;
-  flex-direction: column;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  animation: fadeIn 0.3s ease;
-}
-
-/* HEADER */
-#chat-header {
-  background: linear-gradient(135deg,#A8DADC,#457B9D);
-  color: #1D3557;
-  padding: 12px;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-#close-chat {
-  cursor: pointer;
-}
-
-/* MESSAGES */
-#chat-messages {
-  flex: 1;
-  padding: 10px;
-  overflow-y: auto;
-  background: #f7f9fc;
-}
-
-.msg {
-  max-width: 75%;
-  padding: 10px;
-  margin: 6px 0;
-  border-radius: 12px;
-  animation: slideUp 0.3s ease;
-}
-
-.bot-msg {
-  background: #eaeef3;
-}
-
-.user-msg {
-  background: #457B9D;
-  color: white;
-  margin-left: auto;
-}
-
-/* TYPING */
-#typing {
-  font-size: 12px;
-  padding: 5px 10px;
-  display: none;
-  color: #888;
-}
-
-/* FOOTER */
-#chat-footer {
-  padding: 8px;
-  background: #fff;
-  border-top: 1px solid #eee;
-}
-
-/* QUICK BUTTONS */
-.quick-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 6px;
-}
-.quick-row button {
-  border: none;
-  background: #f0f4f8;
-  padding: 6px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-.quick-row button:hover {
-  background: #A8DADC;
-}
-
-/* INPUT */
-.input-row {
-  display: flex;
-}
-textarea {
-  flex: 1;
-  resize: none;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  padding: 6px;
-}
-#send-btn {
-  background: #457B9D;
-  color: white;
-  border: none;
-  padding: 0 12px;
-  margin-left: 5px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-/* ANIMATIONS */
-@keyframes fadeIn {
-  from {opacity: 0; transform: translateY(10px);}
-  to {opacity: 1; transform: translateY(0);}
-}
-
-@keyframes slideUp {
-  from {opacity: 0; transform: translateY(5px);}
-  to {opacity: 1; transform: translateY(0);}
-}
-/* TOOLTIP */
-.tooltip {
-  position: relative;
-  display: inline-block;
-}
-
-.tooltip-text {
-  visibility: hidden;
-  background: #333;
-  color: #fff;
-  text-align: center;
-  padding: 5px 8px;
-  border-radius: 6px;
-  font-size: 12px;
-
-  position: absolute;
-  bottom: 120%;
-  left: 50%;
-  transform: translateX(-50%);
-
-  opacity: 0;
-  transition: 0.2s;
-  white-space: nowrap;
-}
-
-.tooltip:hover .tooltip-text {
-  visibility: visible;
-  opacity: 1;
-  }
     </style>
 </head>
 <body>
 
     <nav>
-	  <a href="#" class="nav-logo-container">
+        <a href="#" class="nav-logo-container">
             <img src="logo-glowne.png" alt="Strefikowo Logo" class="nav-logo-img">
             <span class="logo">Strefikowo</span>
         </a>
-		  
         <ul class="nav-links">
             <li><a href="#o-nas">O nas</a></li>
-			<li><a href="#chatbot">Strefik</a></li>
+            <li><a href="#chatbot">Strefik</a></li>
             <li><a href="#oferta">Oferta</a></li>
             <li><a href="#plan">Plan dnia</a></li>
-			 <li><a href="#kadra">Kadra</a></li>
-			 <li><a href="#grupy">Grupy</a></li>
-			  <li><a href="#galeria">Galeria</a></li>
-			   <li><a href="#adaptacja">Adaptacja</a></li>
-			    <li><a href="#opinie">Opinie</a></li>
+            <li><a href="#kadra">Kadra</a></li>
+            <li><a href="#grupy">Grupy</a></li>
+            <li><a href="#galeria">Galeria</a></li>
+            <li><a href="#adaptacja">Adaptacja</a></li>
+            <li><a href="#opinie">Opinie</a></li>
             <li><a href="#kontakt">Kontakt</a></li>
-			
         </ul>
         <a href="#kontakt" class="btn" style="padding: 0.6rem 1.2rem;">Zapisz dziecko</a>
     </nav>
-<!-- Sekcja Hero -->
-    <section class="hero">
-        <div class="hero-content">
-            <img src="logo-glowne.png" alt="Strefikowo" class="hero-main-logo">
-            <h1>Bezpieczna przestrzeń dla dziecka</h1>
-            <p>Profesjonalna opieka i radosna edukacja w sercu naszego miasta</p>
- 
-            <a href="#kontakt" class="btn">Zapisz dziecko</a>
-        </div>
-    </section>
 
-    <section id="o-nas">
-        <div class="section-title">
-            <h2>O Nas</h2>
-            <div class="underline"></div>
-        </div>
-        <div class="about-grid">
-            <div>
-                <h3>Drugi dom dla maluchów</h3>
-                <p>Strefikowo to nowoczesna placówka dedykowana dzieciom w wieku od 1 do 6 lat. Naszą misją jest tworzenie środowiska, w którym każde dziecko czuje się bezpieczne, kochane i zainspirowane do odkrywania świata.</p>
-                <p style="margin-top: 1rem;">Wykorzystujemy elementy pedagogiki <strong>Montessori</strong>, kładąc nacisk na samodzielność i naturalny rozwój. Jesteśmy partnerem dla pracujących rodziców, oferując pełne wsparcie i elastyczność.</p>
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <img src="logo-glowne.png" alt="Strefikowo" class="hero-main-logo" style="max-width: 600px; margin-bottom: 20px;">
+                <h1>Bezpieczna przestrzeń dla dziecka</h1>
+                <p>Profesjonalna opieka i radosna edukacja w sercu naszego miasta</p>
+                <a href="#kontakt" class="btn">Zapisz dziecko</a>
             </div>
-            <img src="https://images.unsplash.com/photo-1540479859555-17af45c78602?auto=format&fit=crop&q=80&w=600" alt="Dzieci" style="width: 100%; border-radius: 30px; box-shadow: var(--shadow);">
-        </div>
-    </section>
-	
-	 <section id="chatbot">
-<div class="hero">
+        </section>
 
-  <div class="hero-content">
-
-    <!-- LEWA STRONA (LOGO) -->
-    <div class="hero-left">
-      <img src="logo-strefik.png" alt="Strefik ChatBot">
-    </div>
-
-    <!-- PRAWA STRONA (TEKST) -->
-    <div class="hero-right">
-      <h1>Strefik ChatBOT 🤖</h1>
-      <p>
-        Szybko sprawdzisz menu, plan dnia, wydarzenia i płatności.
-        Bez dzwonienia — wszystko w jednym miejscu.
-      </p>
-
-     
-    </div>
-
-  </div>
-
-</div>
-   
-    </section>
-    <section id="oferta" style="background: var(--light-bg);">
-        <div class="section-title">
-            <h2>Nasza Oferta</h2>
-            <div class="underline"></div>
-        </div>
-        <div class="grid-cards">
-            <div class="card">
-                <h3>👶 Żłobek</h3>
-                <p>(1–3 lata)</p>
-                <p>Ciepła opieka, stymulacja sensoryczna i łagodne wprowadzanie w świat rówieśników.</p>
+        <section id="o-nas">
+            <div class="section-title">
+                <h2>O Nas</h2>
+                <div class="underline"></div>
             </div>
-            <div class="card">
-                <h3>🎨 Przedszkole</h3>
-                <p>(3–6 lat)</p>
-                <p>Edukacja przedszkolna, przygotowanie do szkoły i rozwijanie talentów artystycznych.</p>
+            <div class="about-grid">
+                <div>
+                    <h3>Drugi dom dla maluchów</h3>
+                    <p>Strefikowo to nowoczesna placówka dedykowana dzieciom w wieku od 1 do 6 lat. Naszą misją jest tworzenie środowiska, w którym każde dziecko czuje się bezpieczne, kochane i zainspirowane do odkrywania świata.</p>
+                    <p style="margin-top: 1rem;">Wykorzystujemy elementy pedagogiki <strong>Montessori</strong>, kładąc nacisk na samodzielność i naturalny rozwój. Jesteśmy partnerem dla pracujących rodziców, oferując pełne wsparcie i elastyczność.</p>
+                </div>
+                <img src="https://images.unsplash.com/photo-1540479859555-17af45c78602?auto=format&fit=crop&q=80&w=600" alt="Dzieci" style="width: 100%; border-radius: 30px; box-shadow: var(--shadow);">
             </div>
-            <div class="card">
-                <h3>⚽ Zajęcia dodatkowe</h3>
-                <p>W cenie czesnego:</p>
-                <p>Język angielski, gimnastyka korekcyjna, warsztaty ceramiczne.</p>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="plan">
-        <div class="section-title">
-            <h2>Plan Dnia</h2>
-            <div class="underline"></div>
-        </div>
-        <div class="schedule-list">
-            <div class="schedule-item"><span>08:00 – 09:00</span><span>Przyjście dzieci i zabawy swobodne</span></div>
-            <div class="schedule-item"><span>09:00 – 09:30</span><span>I Śniadanie</span></div>
-            <div class="schedule-item"><span>09:30 – 11:30</span><span>Zajęcia edukacyjne / Ogród</span></div>
-            <div class="schedule-item"><span>11:30 – 12:00</span><span>II Śniadanie / Owoce</span></div>
-            <div class="schedule-item"><span>12:00 – 14:00</span><span>Relaksacja / Drzemka / Bajkoterapia</span></div>
-            <div class="schedule-item"><span>14:00 – 15:00</span><span>Obiad i przygotowanie do powrotu</span></div>
-        </div>
-    </section>
-	
-<section id="kadra" style="background: var(--light-bg);">
-        <div class="section-title">
-            <h2>Kadra Dydaktyczna</h2>
-            <div class="underline"></div>
-        </div>
-        <div class="grid-cards">
-            <div class="card">
-                <img src="https://i.pravatar.cc/150?u=1" class="staff-img" alt="Kadra">
-                <h3>Anna Kowalska</h3>
-                <p><strong>Dyrektor pedagogiczny</strong></p>
-                <p>Specjalista pedagogiki przedszkolnej z 15-letnim doświadczeniem.</p>
-            </div>
-            <div class="card">
-                <img src="https://i.pravatar.cc/150?u=2" class="staff-img" alt="Kadra">
-                <h3>Marek Nowak</h3>
-                <p><strong>Instruktor sportu</strong></p>
-                <p>Pasjonat ruchu, dba o rozwój motoryczny naszych podopiecznych.</p>
-            </div>
-            <div class="card">
-                <img src="https://i.pravatar.cc/150?u=3" class="staff-img" alt="Kadra">
-                <h3>Julia Wiśniewska</h3>
-                <p><strong>Nauczyciel Montessori</strong></p>
-                <p>Certyfikowany opiekun, skupiony na budowaniu samodzielności u dzieci.</p>
-            </div>
-        </div>
-    </section>
-	
- <section id="grupy">
-    <section class="groups-section">
-        <div class="section-title">
-            <h2>Nasze Grupy</h2>
-            <div class="underline"></div>
-        </div>
-        <div class="container" style="max-width: 600px;">
-            <div class="group-box">
-                <span>🧸 <strong>Grupa "Maluszki"</strong> (Żłobek)</span>
-                <span>max. 15 dzieci</span>
-            </div>
-            <div class="group-box">
-                <span>🚀 <strong>Grupa "Odkrywcy"</strong> (Przedszkole)</span>
-                <span>max. 20 dzieci</span>
-            </div>
-            <div class="group-box">
-                <span>🎨 <strong>Grupa "Twórcy"</strong> (Przedszkole Starsze)</span>
-                <span>max. 20 dzieci</span>
-            </div>
-        </div>
-    </section>
-
-    <section id="galeria">
-        <div class="section-title">
-            <h2>Galeria</h2>
-            <div class="underline"></div>
-        </div>
-        <div class="gallery-grid">
-            <img src="https://verdeavis.pl/media/magefan_blog/sala-w-przedszkolu.jpeg" alt="Sala">
-            <img src="https://spil.pl/wp-content/uploads/2023/05/bezpieczny-plac-zabaw.jpg" alt="Plac zabaw">
-            <img src="https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&q=80&w=400" alt="Ogród">
-            <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&q=80&w=400" alt="Dzieci">
-			<img src="https://www.newseria.pl/files/_uploaded/glownekonf_899979056,w_580,_small.jpg" alt="Sala">
-        </div>
-    </section>
-  <section id="adaptacja">
-    <section style="background: var(--light-bg);">
-        <div class="section-title">
-            <h2>Adaptacja</h2>
-            <div class="underline"></div>
-        </div>
-        <ul class="adaptation-list">
-            <li><strong>Stopniowe przyzwyczajanie:</strong> Pierwsze dni trwają krócej, aby dziecko powoli poznawało nowe otoczenie.</li>
-            <li><strong>Obecność rodzica:</strong> Zachęcamy rodziców do wspólnej zabawy w sali w pierwszych dniach procesu.</li>
-            <li><strong>Indywidualne podejście:</strong> Każdy proces adaptacji dostosowujemy do emocji i tempa dziecka.</li>
-            <li><strong>Przedmiot z domu:</strong> Pozwalamy na przynoszenie ulubionej przytulanki, która daje poczucie bezpieczeństwa.</li>
-        </ul>
-    </section>
-  <section id="opinie">
-    <section class="reviews-section">
-        <div class="section-title">
-            <h2>Opinie Rodziców</h2>
-            <div class="underline" style="background: white;"></div>
-        </div>
-        <div class="grid-cards">
-            <div class="review-card">"Cudowne miejsce! Mój syn zaadoptował się w tydzień, a panie są niesamowicie cierpliwe i ciepłe."</div>
-            <div class="review-card">"Bardzo cenimy podejście Montessori. Widzimy ogromny postęp w samodzielności naszej córki."</div>
-            <div class="review-card">"Zajęcia dodatkowe są świetnie zorganizowane. Angielski przez zabawę to strzał w dziesiątkę!"</div>
-        </div>
-    </section>
-
-    <section id="kontakt">
-       <div>
-
-  <div class="map-container">
-    <iframe 
-      src="https://www.google.com/maps?q=Wrocław&output=embed"
-      width="100%" 
-      height="300" 
-      style="border:0;" 
-      allowfullscreen="" 
-      loading="lazy">
-    </iframe>
-  </div>
-
-  <div style="margin-top: 1.5rem;">
-    <p><strong>Dojazd:</strong> Nasza placówka znajduje się w cichej dzielnicy, blisko przystanku linii 102. Posiadamy własny parking dla rodziców.</p>
-    
-    <p style="margin-top: 1rem;">📞 +48 123 456 789</p>
-    <p>📧 kontakt@strefikowo.pl</p>
-  </div>
-
-</div>
+        <section id="chatbot">
+            <div class="hero" style="height: auto; padding: 100px 10%;">
+                <div class="hero-content" style="display: flex; align-items: center; gap: 40px; text-align: left;">
+                    <div class="hero-left">
+                        <img src="logo-strefik.png" alt="Strefik ChatBot" style="max-width: 250px;">
+                    </div>
+                    <div class="hero-right">
+                        <h1>Strefik ChatBOT 🤖</h1>
+                        <p>Szybko sprawdzisz menu, plan dnia, wydarzenia i płatności. Bez dzwonienia — wszystko w jednym miejscu.</p>
+                    </div>
                 </div>
             </div>
-            <form class="form-group">
-                <input type="text" placeholder="Twoje imię" required>
-                <input type="email" placeholder="Twój e-mail" required>
-                <textarea rows="5" placeholder="Wiadomość do nas..." required></textarea>
-                <button type="submit" class="btn">Wyślij wiadomość</button>
-            </form>
+        </section>
+
+        <section id="oferta" style="background: var(--light-bg);">
+            <div class="section-title">
+                <h2>Nasza Oferta</h2>
+                <div class="underline"></div>
+            </div>
+            <div class="grid-cards">
+                <div class="card">
+                    <h3>👶 Żłobek</h3>
+                    <p>(1–3 lata)</p>
+                    <p>Ciepła opieka, stymulacja sensoryczna i łagodne wprowadzanie w świat rówieśników.</p>
+                </div>
+                <div class="card">
+                    <h3>🎨 Przedszkole</h3>
+                    <p>(3–6 lat)</p>
+                    <p>Edukacja przedszkolna, przygotowanie do szkoły i rozwijanie talentów artystycznych.</p>
+                </div>
+                <div class="card">
+                    <h3>⚽ Zajęcia dodatkowe</h3>
+                    <p>W cenie czesnego:</p>
+                    <p>Język angielski, gimnastyka korekcyjna, warsztaty ceramiczne.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="plan">
+            <div class="section-title">
+                <h2>Plan Dnia</h2>
+                <div class="underline"></div>
+            </div>
+            <div class="schedule-list">
+                <div class="schedule-item"><span>08:00 – 09:00</span><span>Przyjście dzieci i zabawy swobodne</span></div>
+                <div class="schedule-item"><span>09:00 – 09:30</span><span>I Śniadanie</span></div>
+                <div class="schedule-item"><span>09:30 – 11:30</span><span>Zajęcia edukacyjne / Ogród</span></div>
+                <div class="schedule-item"><span>11:30 – 12:00</span><span>II Śniadanie / Owoce</span></div>
+                <div class="schedule-item"><span>12:00 – 14:00</span><span>Relaksacja / Drzemka / Bajkoterapia</span></div>
+                <div class="schedule-item"><span>14:00 – 15:00</span><span>Obiad i przygotowanie do powrotu</span></div>
+            </div>
+        </section>
+
+        <section id="kadra" style="background: var(--light-bg);">
+            <div class="section-title">
+                <h2>Kadra Dydaktyczna</h2>
+                <div class="underline"></div>
+            </div>
+            <div class="grid-cards">
+                <div class="card">
+                    <img src="https://i.pravatar.cc/150?u=1" class="staff-img" alt="Kadra">
+                    <h3>Anna Kowalska</h3>
+                    <p><strong>Dyrektor pedagogiczny</strong></p>
+                    <p>Specjalista pedagogiki przedszkolnej z 15-letnim doświadczeniem.</p>
+                </div>
+                <div class="card">
+                    <img src="https://i.pravatar.cc/150?u=2" class="staff-img" alt="Kadra">
+                    <h3>Marek Nowak</h3>
+                    <p><strong>Instruktor sportu</strong></p>
+                    <p>Pasjonat ruchu, dba o rozwój motoryczny naszych podopiecznych.</p>
+                </div>
+                <div class="card">
+                    <img src="https://i.pravatar.cc/150?u=3" class="staff-img" alt="Kadra">
+                    <h3>Julia Wiśniewska</h3>
+                    <p><strong>Nauczyciel Montessori</strong></p>
+                    <p>Certyfikowany opiekun, skupiony na budowaniu samodzielności u dzieci.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="grupy">
+            <div class="section-title">
+                <h2>Nasze Grupy</h2>
+                <div class="underline"></div>
+            </div>
+            <div class="container" style="max-width: 600px;">
+                <div class="group-box">
+                    <span>🧸 <strong>Grupa "Maluszki"</strong> (Żłobek)</span>
+                    <span>max. 15 dzieci</span>
+                </div>
+                <div class="group-box">
+                    <span>🚀 <strong>Grupa "Odkrywcy"</strong> (Przedszkole)</span>
+                    <span>max. 20 dzieci</span>
+                </div>
+                <div class="group-box">
+                    <span>🎨 <strong>Grupa "Twórcy"</strong> (Przedszkole Starsze)</span>
+                    <span>max. 20 dzieci</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="galeria">
+            <div class="section-title">
+                <h2>Galeria</h2>
+                <div class="underline"></div>
+            </div>
+            <div class="gallery-grid">
+                <img src="https://verdeavis.pl/media/magefan_blog/sala-w-przedszkolu.jpeg" alt="Sala">
+                <img src="https://spil.pl/wp-content/uploads/2023/05/bezpieczny-plac-zabaw.jpg" alt="Plac zabaw">
+                <img src="https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&q=80&w=400" alt="Ogród">
+                <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&q=80&w=400" alt="Dzieci">
+                <img src="https://www.newseria.pl/files/_uploaded/glownekonf_899979056,w_580,_small.jpg" alt="Sala">
+            </div>
+        </section>
+
+        <section id="adaptacja" style="background: var(--light-bg);">
+            <div class="section-title">
+                <h2>Adaptacja</h2>
+                <div class="underline"></div>
+            </div>
+            <ul class="adaptation-list">
+                <li><strong>Stopniowe przyzwyczajanie:</strong> Pierwsze dni trwają krócej, aby dziecko powoli poznawało nowe otoczenie.</li>
+                <li><strong>Obecność rodzica:</strong> Zachęcamy rodziców do wspólnej zabawy w sali w pierwszych dniach procesu.</li>
+                <li><strong>Indywidualne podejście:</strong> Każdy proces adaptacji dostosowujemy do emocji i tempa dziecka.</li>
+                <li><strong>Przedmiot z domu:</strong> Pozwalamy na przynoszenie ulubionej przytulanki, która daje poczucie bezpieczeństwa.</li>
+            </ul>
+        </section>
+
+        <section id="opinie" class="reviews-section">
+            <div class="section-title">
+                <h2>Opinie Rodziców</h2>
+                <div class="underline" style="background: white;"></div>
+            </div>
+            <div class="grid-cards">
+                <div class="review-card">"Cudowne miejsce! Mój syn zaadoptował się w tydzień, a panie są niesamowicie cierpliwe i ciepłe."</div>
+                <div class="review-card">"Bardzo cenimy podejście Montessori. Widzimy ogromny postęp w samodzielności naszej córki."</div>
+                <div class="review-card">"Zajęcia dodatkowe są świetnie zorganizowane. Angielski przez zabawę to strzał w dziesiątkę!"</div>
+            </div>
+        </section>
+
+        <section id="kontakt">
+            <div class="section-title">
+                <h2>Kontakt i Lokalizacja</h2>
+                <div class="underline"></div>
+            </div>
+            <div class="contact-container">
+                <div>
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps?q=Wrocław&output=embed" width="100%" height="300" style="border:0; border-radius: 20px;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                    <div style="margin-top: 1.5rem;">
+                        <p><strong>Dojazd:</strong> Nasza placówka znajduje się w cichej dzielnicy, blisko przystanku linii 102. Posiadamy własny parking dla rodziców.</p>
+                        <p style="margin-top: 1rem;">📞 +48 123 456 789</p>
+                        <p>📧 kontakt@strefikowo.pl</p>
+                    </div>
+                </div>
+                <form class="form-group">
+                    <input type="text" placeholder="Twoje imię" required>
+                    <input type="email" placeholder="Twój e-mail" required>
+                    <textarea rows="5" placeholder="Wiadomość do nas..." required></textarea>
+                    <button type="submit" class="btn">Wyślij wiadomość</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Floating Chat Bot -->
+    <div id="chat-button">
+        <img src="logo-strefik.png" style="height: 50px;" alt="Chat">
+        <span class="chat-label" style="background: #c1272d; color: white; padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">Strefik</span>
+    </div>
+
+    <!-- CHAT WINDOW -->
+    <div id="chat-window">
+        <div id="chat-header">
+            <span>Strefik ChatBOT 🤖</span>
+            <span id="close-chat" style="cursor: pointer;">✖</span>
         </div>
-    </section>
-	
-	
-	
-<!-- Floating Chat Bot Element -->
-
- <div class="chatbot-button" id="chat-button">
-   
-    <img src="logo-strefik.png" style="height: 70px;">
-</div>
-
-
-	
-	
-	
-<!-- CHAT WINDOW -->
-<div id="chat-window">
-  
-  <div id="chat-header">
-    <span>Strefik ChatBOT 🤖</span>
-    <span id="close-chat">✖</span>
-  </div>
-
-  <div id="chat-messages">
-    <div class="msg bot-msg">
-      Chronimy dane Twojego dziecka jak skarb. 🛡️
-      <br><br>
-      Wybierz kim jesteś:
-      <br>Rodzic / Nauczyciel / Admin
-    </div>
-  </div>
-
-  <div id="typing">Strefik pisze...</div>
-
-  <div id="chat-footer">
-
-    <div class="quick-row">
-
-  <div class="tooltip">
-    <button onclick="quick('menu')">🍽️</button>
-    <span class="tooltip-text">Menu</span>
-  </div>
-
-  <div class="tooltip">
-    <button onclick="quick('plan dnia')">📅</button>
-    <span class="tooltip-text">Plan dnia</span>
-  </div>
-
-  <div class="tooltip">
-    <button onclick="quick('wydarzenia')">📢</button>
-    <span class="tooltip-text">Wydarzenia</span>
-  </div>
-
-  <div class="tooltip">
-    <button onclick="quick('płatności')">💳</button>
-    <span class="tooltip-text">Płatności</span>
-  </div>
-
-  <div class="tooltip">
-    <button onclick="quick('logout')">🚪</button>
-    <span class="tooltip-text">Wyloguj</span>
-  </div>
-
-</div>
-
-    <div class="input-row">
-      <textarea id="chat-input" placeholder="Napisz wiadomość..."></textarea>
-      <button id="send-btn">➤</button>
+        <div id="chat-messages">
+            <div class="msg bot-msg">
+                Chronimy dane Twojego dziecka jak skarb. 🛡️
+                <br><br>
+                Wybierz kim jesteś:
+                <br>Rodzic / Nauczyciel / Admin
+            </div>
+        </div>
+        <div id="typing">Strefik pisze...</div>
+        <div id="chat-footer">
+            <div class="quick-row">
+                <div class="tooltip">
+                    <button onclick="quick('menu')">🍽️</button>
+                    <span class="tooltip-text">Menu</span>
+                </div>
+                <div class="tooltip">
+                    <button onclick="quick('plan dnia')">📅</button>
+                    <span class="tooltip-text">Plan dnia</span>
+                </div>
+                <div class="tooltip">
+                    <button onclick="quick('wydarzenia')">📢</button>
+                    <span class="tooltip-text">Wydarzenia</span>
+                </div>
+                <div class="tooltip">
+                    <button onclick="quick('płatności')">💳</button>
+                    <span class="tooltip-text">Płatności</span>
+                </div>
+                <div class="tooltip">
+                    <button onclick="quick('logout')">🚪</button>
+                    <span class="tooltip-text">Wyloguj</span>
+                </div>
+            </div>
+            <div class="input-row">
+                <textarea id="chat-input" placeholder="Napisz wiadomość..."></textarea>
+                <button id="send-btn">➤</button>
+            </div>
+        </div>
     </div>
 
-  </div>
-</div>
-
-
- <footer>
-        <p>&copy; 2026 Strefikowo — Żłobek i Przedszkole. Zapraszamy do nas!
-		<br><strong>Made by: Sonia Nawrat, Katarzyna Sojka</p></strong>
+    <footer>
+        <p>&copy; 2026 Strefikowo — Żłobek i Przedszkole. Zapraszamy do nas!</p>
+        <p><strong>Made by: Sonia Nawrat, Katarzyna Sojka</strong></p>
     </footer>
-</script>
-<script>
-const messages = document.getElementById('chat-messages');
-const input = document.getElementById('chat-input');
-const typing = document.getElementById('typing');
 
-let userRole = null;
-let editMode = null;
-let waitingForCode = false;
+    <script>
+        const messages = document.getElementById('chat-messages');
+        const input = document.getElementById('chat-input');
+        const typing = document.getElementById('typing');
+        const openChat = document.getElementById("chat-button");
+        const chatWindow = document.getElementById("chat-window");
+        const closeBtn = document.getElementById("close-chat");
 
-// dane
-let menuData = `🍽️ MENU:
-Poniedziałek:
-🥣 Owsianka
-🍲 Pomidorowa + makaron
-🍎 Jabłko + biszkopty
+        let userRole = null;
+        let editMode = null;
+        let waitingForCode = false;
 
-Wtorek:
-🥣 Kanapki + kakao
-🍲 Rosół + kurczak
-🍌 Banan + jogurt
+        let menuData = `🍽️ MENU:
+Poniedziałek: 🥣 Owsianka, 🍲 Pomidorowa, 🍎 Jabłko
+Wtorek: 🥣 Kanapki, 🍲 Rosół, 🍌 Banan
+Środa: 🥣 Płatki, 🍲 Jarzynowa, 🍓 Truskawki
+Czwartek: 🥣 Jajecznica, 🍲 Krupnik, 🍊 Pomarańcza
+Piątek: 🥣 Parówki, 🍲 Ogórkowa, 🍐 Gruszka`;
 
-Środa:
-🥣 Płatki + mleko
-🍲 Jarzynowa + ryż
-🍓 Truskawki
-
-Czwartek:
-🥣 Jajecznica
-🍲 Krupnik + kotlet
-🍊 Pomarańcza
-
-Piątek:
-🥣 Parówki
-🍲 Ogórkowa + ryba
-🍐 Gruszka`;
-
-let planData = `📅 PLAN DNIA:
+        let planData = `📅 PLAN DNIA:
 08:00 Śniadanie
 09:00 Zajęcia
 11:00 Spacer
@@ -928,182 +731,88 @@ let planData = `📅 PLAN DNIA:
 13:00 Odpoczynek
 15:00 Odbiór`;
 
-let eventData = `📢 WYDARZENIA:
+        let eventData = `📢 WYDARZENIA:
 10.05 – Zebranie rodziców
 15.05 – Wycieczka
 20.05 – Dzień sportu
 25.05 – Warsztaty plastyczne`;
 
-function addMsg(text, type) {
-    const div = document.createElement('div');
-    div.className = 'msg ' + (type === 'user' ? 'user-msg' : 'bot-msg');
-    div.innerText = text;
-    messages.appendChild(div);
-    messages.scrollTop = messages.scrollHeight;
-}
-
-function botResponse(text) {
-    const lower = text.toLowerCase();
-
-    // 🔥 LOGOUT (działa zawsze)
-    if (lower === "logout") {
-        userRole = null;
-        editMode = null;
-        waitingForCode = false;
-
-        return `Wylogowano ✅
-
-Wybierz kim jesteś:
-Rodzic / Nauczyciel / Admin`;
-    }
-
-    // WYBÓR ROLI
-    if (!userRole) {
-        if (lower.includes("rodzic")) {
-            userRole = "rodzic";
-            return "Tryb: Rodzic 👨‍👩‍👧";
+        function addMsg(text, type) {
+            const div = document.createElement('div');
+            div.className = 'msg ' + (type === 'user' ? 'user-msg' : 'bot-msg');
+            div.innerText = text;
+            messages.appendChild(div);
+            messages.scrollTop = messages.scrollHeight;
         }
-        if (lower.includes("nauczyciel")) {
-            userRole = "nauczyciel";
-            return "Tryb: Nauczyciel 👩‍🏫 (możesz edytować plan i wydarzenia)";
+
+        function botResponse(text) {
+            const lower = text.toLowerCase();
+            if (lower === "logout") {
+                userRole = null; editMode = null; waitingForCode = false;
+                return `Wylogowano ✅\n\nWybierz kim jesteś:\nRodzic / Nauczyciel / Admin`;
+            }
+            if (!userRole) {
+                if (lower.includes("rodzic")) { userRole = "rodzic"; return "Tryb: Rodzic 👨‍👩‍👧"; }
+                if (lower.includes("nauczyciel")) { userRole = "nauczyciel"; return "Tryb: Nauczyciel 👩‍🏫"; }
+                if (lower.includes("admin")) { userRole = "admin"; return "Tryb: Admin 🧑‍💼"; }
+                return "Wpisz: Rodzic / Nauczyciel / Admin";
+            }
+            if (lower === "edytuj menu" && userRole === "admin") { editMode = "menu"; return "Wpisz nowe menu:"; }
+            if (lower === "edytuj plan" && userRole === "nauczyciel") { editMode = "plan"; return "Wpisz nowy plan:"; }
+            if (lower === "edytuj wydarzenia" && userRole === "nauczyciel") { editMode = "event"; return "Wpisz nowe wydarzenia:"; }
+
+            if (editMode) {
+                if (editMode === "menu") { menuData = text; editMode = null; return "Menu zapisane ✅"; }
+                if (editMode === "plan") { planData = text; editMode = null; return "Plan zapisany ✅"; }
+                if (editMode === "event") { eventData = text; editMode = null; return "Wydarzenia zapisane ✅"; }
+            }
+
+            if (lower.includes("menu")) return (userRole === "admin" ? menuData + "\n\nNapisz: edytuj menu" : menuData);
+            if (lower.includes("plan")) return (userRole === "nauczyciel" ? planData + "\n\nNapisz: edytuj plan" : planData);
+            if (lower.includes("wydarzenia")) return (userRole === "nauczyciel" ? eventData + "\n\nNapisz: edytuj wydarzenia" : eventData);
+            
+            if (lower.includes("płat")) { waitingForCode = true; return "Podaj kod klienta 💳"; }
+            if (waitingForCode && /^\d{3,6}$/.test(lower)) {
+                waitingForCode = false;
+                return Math.random() > 0.5 ? "Płatności uregulowane ✅" : "Pozostała kwota: 150 zł ⚠️";
+            }
+            return "Nie rozumiem 🤔 Wybierz opcję z menu lub napisz coś innego.";
         }
-        if (lower.includes("admin")) {
-            userRole = "admin";
-            return "Tryb: Admin 🧑‍💼 (możesz edytować menu)";
+
+        function send() {
+            const text = input.value.trim();
+            if (!text) return;
+            addMsg(text, 'user');
+            input.value = "";
+            typing.style.display = 'block';
+            setTimeout(() => {
+                typing.style.display = 'none';
+                addMsg(botResponse(text), 'bot');
+            }, 600);
         }
-        return "Wpisz: Rodzic / Nauczyciel / Admin";
-    }
 
-    // 🔥 KOMENDY EDYCJI (NAPRAWA BUGA)
-    if (lower === "edytuj menu" && userRole === "admin") {
-        editMode = "menu";
-        return "Wpisz nowe menu:";
-    }
-
-    if (lower === "edytuj plan" && userRole === "nauczyciel") {
-        editMode = "plan";
-        return "Wpisz nowy plan:";
-    }
-
-    if (lower === "edytuj wydarzenia" && userRole === "nauczyciel") {
-        editMode = "event";
-        return "Wpisz nowe wydarzenia:";
-    }
-
-    // TRYB EDYCJI
-    if (editMode) {
-        if (editMode === "menu") {
-            menuData = text;
-            editMode = null;
-            return "Menu zapisane ✅";
+        function quick(text) {
+            addMsg(text, 'user');
+            typing.style.display = 'block';
+            setTimeout(() => {
+                typing.style.display = 'none';
+                addMsg(botResponse(text), 'bot');
+            }, 600);
         }
-        if (editMode === "plan") {
-            planData = text;
-            editMode = null;
-            return "Plan zapisany ✅";
-        }
-        if (editMode === "event") {
-            eventData = text;
-            editMode = null;
-            return "Wydarzenia zapisane ✅";
-        }
-    }
 
-    // MENU
-    if (lower.includes("menu")) {
-        if (userRole === "admin") {
-            return menuData + "\n\nNapisz: edytuj menu";
-        }
-        return menuData;
-    }
+        input.addEventListener("keydown", function(e) {
+            if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); }
+        });
 
-    // PLAN
-    if (lower.includes("plan")) {
-        if (userRole === "nauczyciel") {
-            return planData + "\n\nNapisz: edytuj plan";
-        }
-        return planData;
-    }
+        document.getElementById('send-btn').onclick = send;
 
-    // WYDARZENIA
-    if (lower.includes("wydarzenia")) {
-        if (userRole === "nauczyciel") {
-            return eventData + "\n\nNapisz: edytuj wydarzenia";
-        }
-        return eventData;
-    }
+        openChat.onclick = () => {
+            chatWindow.style.display = chatWindow.style.display === "flex" ? "none" : "flex";
+        };
 
-    // PŁATNOŚCI
-    if (lower.includes("płat")) {
-        waitingForCode = true;
-        return "Podaj kod klienta 💳";
-    }
-
-    if (waitingForCode && /^\d{3,6}$/.test(lower)) {
-        waitingForCode = false;
-
-        if (Math.random() > 0.5) {
-            return "Na podstawie podanego kodu: płatności są uregulowane ✅";
-        } else {
-            return "Pozostała kwota do zapłaty: 150 zł ⚠️";
-        }
-    }
-
-    // BEZPIECZEŃSTWO
-    if (lower.includes("dziecko") || lower.includes("dane")) {
-        return "Ze względów bezpieczeństwa mogę udostępnić tylko podstawowe informacje.";
-    }
-
-    return "Nie rozumiem 🤔";
-}
-
-function send() {
-    const text = input.value.trim();
-    if (!text) return;
-
-    addMsg(text, 'user');
-    input.value = "";
-    typing.style.display = 'block';
-
-    setTimeout(() => {
-        typing.style.display = 'none';
-        addMsg(botResponse(text), 'bot');
-    }, 600);
-}
-
-function quick(text) {
-    addMsg(text, 'user');
-    typing.style.display = 'block';
-
-    setTimeout(() => {
-        typing.style.display = 'none';
-        addMsg(botResponse(text), 'bot');
-    }, 600);
-}
-
-// ENTER = WYŚLIJ | SHIFT+ENTER = NOWA LINIA
-input.addEventListener("keydown", function(e) {
-    if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        send();
-    }
-});
-
-document.getElementById('send-btn').onclick = send;
-</script>
-<script>
-const openChat = document.getElementById("chat-button");
-const chatWindow = document.getElementById("chat-window");
-const closeBtn = document.getElementById("close-chat");
-
-openChat.onclick = () => {
-  chatWindow.style.display =
-    chatWindow.style.display === "flex" ? "none" : "flex";
-};
-
-closeBtn.onclick = () => {
-  chatWindow.style.display = "none";
-};
-</script>
+        closeBtn.onclick = () => {
+            chatWindow.style.display = "none";
+        };
+    </script>
 </body>
 </html>
