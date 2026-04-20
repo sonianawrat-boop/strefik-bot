@@ -1,108 +1,650 @@
-Sonia Nawrat, Katarzyna Sojka
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strefikowo — Żłobek i Przedszkole</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --mint: #A8DADC;
+            --blue: #457B9D;
+            --dark-blue: #1D3557;
+            --strefik-red: #d63384;
+            --strefik-yellow: #ffca28;
+            --white: #FFFFFF;
+            --light-bg: #F8FDFF;
+            --text: #444;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --transition: all 0.3s ease;
+        }
 
-<style>
-body { margin:0; font-family: Arial; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-#chat-container {
-    max-width: 430px;
-    height: 95vh;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #ddd;
+        body {
+            font-family: 'Quicksand', sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--white);
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .logo-text {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        /* Nawigacja */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 0.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+
+        .nav-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-logo-img {
+            height: 50px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-blue);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--blue);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: radial-gradient(circle at top right, #fdfcfb 0%, #e2ebf0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 10% 60px;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 900px;
+        }
+
+        .hero-main-logo {
+            max-width: 350px;
+            width: 100%;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            color: var(--dark-blue);
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            color: var(--blue);
+            font-weight: 500;
+        }
+
+        /* Przyciski */
+        .btn {
+            display: inline-block;
+            padding: 1.2rem 2.5rem;
+            background-color: var(--blue);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(69, 123, 157, 0.3);
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            background-color: var(--dark-blue);
+        }
+
+        .btn-alt {
+            background-color: var(--strefik-yellow);
+            color: var(--dark-blue);
+            margin-left: 1rem;
+        }
+
+        /* O Nas z drugim logo */
+        section { padding: 100px 10%; }
+
+        .about-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5%;
+            align-items: center;
+        }
+
+        .about-image-box {
+            background: var(--light-bg);
+            padding: 40px;
+            border-radius: 40px;
+            text-align: center;
+        }
+
+        .strefik-mascot {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Oferta */
+        .offer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .offer-card {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+            border-bottom: 8px solid var(--mint);
+            transition: var(--transition);
+        }
+
+        .offer-card:hover { transform: translateY(-10px); }
+        .offer-card.preschool { border-bottom-color: var(--strefik-yellow); }
+
+        /* Plan Dnia */
+        .schedule-box {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .schedule-row {
+            display: flex;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .schedule-row:nth-child(even) { background: #fafafa; }
+
+        .time-tag {
+            font-weight: 700;
+            color: var(--blue);
+            width: 150px;
+            flex-shrink: 0;
+        }
+
+        /* Chat Bot Floating Button (Nawiązanie do Twojej grafiki) */
+        .chatbot-bubble {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            z-index: 9999;
+            transition: var(--transition);
+            border: 2px solid var(--strefik-yellow);
+        }
+
+        .chatbot-bubble:hover { transform: scale(1.1); }
+        
+        .chat-label {
+            background: #c1272d;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        /* Kontakt */
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-form input, .contact-form textarea {
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px solid #eee;
+            font-family: inherit;
+        }
+
+        footer {
+            background: var(--dark-blue);
+            color: white;
+            padding: 40px 10%;
+            text-align: center;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .about-container, .offer-grid, .contact-wrapper { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.2rem; }
+        }
+		
+/* BUTTON */
+#chat-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: linear-gradient(135deg,#457B9D,#1D3557);
+  color: white;
+  padding: 16px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 22px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+#chat-button:hover {
+  transform: scale(1.1);
 }
 
+/* WINDOW */
+#chat-window {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 320px;
+  height: 480px;
+  background: white;
+  border-radius: 16px;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  animation: fadeIn 0.3s ease;
+}
+
+/* HEADER */
 #chat-header {
-    background: #457B9D;
-    color: white;
-    padding: 15px;
+  background: linear-gradient(135deg,#A8DADC,#457B9D);
+  color: #1D3557;
+  padding: 12px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#close-chat {
+  cursor: pointer;
 }
 
+/* MESSAGES */
 #chat-messages {
-    flex: 1;
-    padding: 15px;
-    overflow-y: auto;
-    background: #F1FAEE;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  background: #f7f9fc;
 }
 
-.msg { padding:10px; border-radius:10px; max-width:90%; }
-.bot-msg { background:#eee; }
-.user-msg { background:#A8DADC; align-self:flex-end; }
-
-#chat-footer { padding:10px; }
-
-.quick-row { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:5px; }
-
-.quick-btn {
-    border:1px solid #457B9D;
-    padding:5px 10px;
-    border-radius:15px;
-    background:white;
-    cursor:pointer;
+.msg {
+  max-width: 75%;
+  padding: 10px;
+  margin: 6px 0;
+  border-radius: 12px;
+  animation: slideUp 0.3s ease;
 }
 
-.input-row { display:flex; gap:5px; }
-
-#chat-input {
-    flex:1;
-    padding:5px;
-    resize:none;
+.bot-msg {
+  background: #eaeef3;
 }
 
+.user-msg {
+  background: #457B9D;
+  color: white;
+  margin-left: auto;
+}
+
+/* TYPING */
+#typing {
+  font-size: 12px;
+  padding: 5px 10px;
+  display: none;
+  color: #888;
+}
+
+/* FOOTER */
+#chat-footer {
+  padding: 8px;
+  background: #fff;
+  border-top: 1px solid #eee;
+}
+
+/* QUICK BUTTONS */
+.quick-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.quick-row button {
+  border: none;
+  background: #f0f4f8;
+  padding: 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.quick-row button:hover {
+  background: #A8DADC;
+}
+
+/* INPUT */
+.input-row {
+  display: flex;
+}
+textarea {
+  flex: 1;
+  resize: none;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: 6px;
+}
 #send-btn {
-    background:#457B9D;
-    color:white;
-    border:none;
-    padding:5px 10px;
+  background: #457B9D;
+  color: white;
+  border: none;
+  padding: 0 12px;
+  margin-left: 5px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-#typing { font-size:12px; color:gray; display:none; }
-</style>
-</head>
+/* ANIMATIONS */
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(10px);}
+  to {opacity: 1; transform: translateY(0);}
+}
 
+@keyframes slideUp {
+  from {opacity: 0; transform: translateY(5px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+/* TOOLTIP */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  background: #333;
+  color: #fff;
+  text-align: center;
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  opacity: 0;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+    </style>
+</head>
 <body>
 
-<div id="chat-container">
+    <!-- Nawigacja -->
+    <nav>
+        <a href="#" class="nav-logo-container">
+            <img src="logo-glowne.png" alt="Strefikowo Logo" class="nav-logo-img">
+            <span class="logo-text">Strefikowo</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#about">O nas</a></li>
+            <li><a href="#offer">Oferta</a></li>
+            <li><a href="#schedule">Plan dnia</a></li>
+            <li><a href="#contact">Kontakt</a></li>
+        </ul>
+        <a href="#contact" class="btn" style="padding: 0.7rem 1.5rem;">Zapisy 2024</a>
+    </nav>
 
-<div id="chat-header">Strefik ChatBOT🤖</div>
+    <!-- Sekcja Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <img src="logo-glowne.png" alt="Strefikowo" class="hero-main-logo">
+            <h1>Bezpieczna przestrzeń dla dziecka</h1>
+            <p>Profesjonalna opieka i radosna edukacja w sercu naszego miasta</p>
+            <div>
+                <a href="#offer" class="btn">Poznaj naszą ofertę</a>
+                <a href="#contact" class="btn btn-alt">Umów wizytę</a>
+            </div>
+        </div>
+    </section>
 
-<div id="chat-messages">
-<div class="msg bot-msg">
-Chronimy dane Twojego dziecka jak skarb. 🛡️
+    <!-- O Nas -->
+    <section id="about">
+        <div class="about-container">
+            <div class="about-image-box">
+                <!-- Drugie logo wykorzystane jako element wizualny -->
+                <img src="logo-strefik.png" alt="Strefik" class="strefik-mascot">
+                <p style="margin-top: 15px; font-weight: 600; color: var(--blue);">Poznaj Strefika – naszego opiekuna radosnej nauki!</p>
+            </div>
+            <div>
+                <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">Miejsce, które dzieci kochają</h2>
+                <p>W Strefikowie stawiamy na <strong>bezpieczeństwo, rozwój i zabawę</strong>. Nasza placówka łączy funkcję żłobka i przedszkola, zapewniając dzieciom płynne przejście między etapami edukacji.</p>
+                <ul style="list-style: none; margin-top: 20px;">
+                    <li>🌟 Metoda Montessori w codziennych zajęciach</li>
+                    <li>🎨 Warsztaty kreatywne i artystyczne</li>
+                    <li>🇬🇧 Język angielski przez zabawę</li>
+                </ul>
+            </div>
+        </div>
+    </section>
 
-Wybierz kim jesteś:
-Rodzic / Nauczyciel / Admin
+    <!-- Oferta -->
+    <section id="offer" style="background-color: var(--light-bg);">
+        <h2 style="text-align: center; margin-bottom: 3rem;">Nasza Oferta</h2>
+        <div class="offer-grid">
+            <div class="offer-card">
+                <h3 style="color: var(--blue); font-size: 1.8rem;">Żłobek</h3>
+                <p style="margin: 10px 0;"><strong>Wiek: 1 – 3 lata</strong></p>
+                <p>Zapewniamy troskliwą opiekę i stymulację sensoryczną dla najmłodszych w bezpiecznych, przytulnych salach.</p>
+            </div>
+            <div class="offer-card preschool">
+                <h3 style="color: var(--strefik-red); font-size: 1.8rem;">Przedszkole</h3>
+                <p style="margin: 10px 0;"><strong>Wiek: 3 – 6 lat</strong></p>
+                <p>Skupiamy się na przygotowaniu do szkoły, rozwijaniu kompetencji społecznych i odkrywaniu talentów.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plan Dnia -->
+    <section id="schedule">
+        <h2 style="text-align: center; margin-bottom: 3rem;">Rytm Dnia w Strefikowie</h2>
+        <div class="schedule-box">
+            <div class="schedule-row">
+                <div class="time-tag">08:00 – 09:00</div>
+                <div>Powitanie dzieci i zabawy swobodne</div>
+            </div>
+            <div class="schedule-row">
+                <div class="time-tag">09:00 – 10:00</div>
+                <div>Zdrowe śniadanie i higiena</div>
+            </div>
+            <div class="schedule-row">
+                <div class="time-tag">10:00 – 12:00</div>
+                <div>Blok edukacyjny, spacer lub ogród</div>
+            </div>
+            <div class="schedule-row">
+                <div class="time-tag">12:00 – 13:00</div>
+                <div>Domowy obiad</div>
+            </div>
+            <div class="schedule-row">
+                <div class="time-tag">13:00 – 14:30</div>
+                <div>Odpoczynek, bajkoterapia, drzemka</div>
+            </div>
+            <div class="schedule-row" style="border: none;">
+                <div class="time-tag">14:30 – 16:00</div>
+                <div>Podwieczorek i zajęcia dodatkowe</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kontakt -->
+    <section id="contact">
+        <div class="contact-wrapper">
+            <div>
+                <h2>Skontaktuj się z nami</h2>
+                <p style="margin: 1.5rem 0;">Chcesz zobaczyć naszą placówkę? Zapraszamy na dzień otwarty!</p>
+                <p><strong>📍 Adres:</strong> ul. Kolorowa 12, Miasto</p>
+                <p><strong>📞 Telefon:</strong> +48 500 600 700</p>
+                <p><strong>📧 Email:</strong> biuro@strefikowo.pl</p>
+            </div>
+            <form class="contact-form">
+                <input type="text" placeholder="Imię rodzica" required>
+                <input type="email" placeholder="E-mail" required>
+                <textarea rows="4" placeholder="W czym możemy pomóc?"></textarea>
+                <button type="submit" class="btn">Wyślij zapytanie</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Floating Chat Bot Element -->
+  <div class="chatbot-bubble" id="open-chat">
+    <span class="chat-label">Chat</span>
+    <span style="font-weight: 700; color: var(--dark-blue);">Bot</span>
+    <img src="logo-strefik.png" style="height: 30px;">
 </div>
+
+    <footer>
+        <img src="logo-glowne.png" alt="Logo" style="height: 60px; margin-bottom: 20px;">
+        <p>&copy; 2024 Strefikowo — Daycare & Preschool. Wszystkie prawa zastrzeżone.</p>
+    </footer>
+
+
+
+<!-- CHAT WINDOW -->
+<div id="chat-window">
+  
+  <div id="chat-header">
+    <span>Strefik ChatBOT 🤖</span>
+    <span id="close-chat">✖</span>
+  </div>
+
+  <div id="chat-messages">
+    <div class="msg bot-msg">
+      Chronimy dane Twojego dziecka jak skarb. 🛡️
+      <br><br>
+      Wybierz kim jesteś:
+      <br>Rodzic / Nauczyciel / Admin
+    </div>
+  </div>
+
+  <div id="typing">Strefik pisze...</div>
+
+  <div id="chat-footer">
+
+    <div class="quick-row">
+
+  <div class="tooltip">
+    <button onclick="quick('menu')">🍽️</button>
+    <span class="tooltip-text">Menu</span>
+  </div>
+
+  <div class="tooltip">
+    <button onclick="quick('plan dnia')">📅</button>
+    <span class="tooltip-text">Plan dnia</span>
+  </div>
+
+  <div class="tooltip">
+    <button onclick="quick('wydarzenia')">📢</button>
+    <span class="tooltip-text">Wydarzenia</span>
+  </div>
+
+  <div class="tooltip">
+    <button onclick="quick('płatności')">💳</button>
+    <span class="tooltip-text">Płatności</span>
+  </div>
+
+  <div class="tooltip">
+    <button onclick="quick('logout')">🚪</button>
+    <span class="tooltip-text">Wyloguj</span>
+  </div>
+
 </div>
 
-<div id="typing">Strefik pisze...</div>
+    <div class="input-row">
+      <textarea id="chat-input" placeholder="Napisz wiadomość..."></textarea>
+      <button id="send-btn">➤</button>
+    </div>
 
-<div id="chat-footer">
-
-<div class="quick-row">
-<button class="quick-btn" onclick="quick('menu')">🍽️ Menu</button>
-<button class="quick-btn" onclick="quick('plan dnia')">📅 Plan dnia</button>
-<button class="quick-btn" onclick="quick('wydarzenia')">📢 Wydarzenia</button>
-<button class="quick-btn" onclick="quick('płatności')">💳 Płatności</button>
-<button class="quick-btn" onclick="quick('logout')">🚪 Wyloguj</button>
+  </div>
 </div>
 
-<div class="input-row">
-<textarea id="chat-input" rows="2" placeholder="Napisz wiadomość..."></textarea>
-<button id="send-btn">Wyślij</button>
-</div>
 
-</div>
-</div>
-
+</script>
 <script>
 const messages = document.getElementById('chat-messages');
 const input = document.getElementById('chat-input');
@@ -310,7 +852,19 @@ input.addEventListener("keydown", function(e) {
 
 document.getElementById('send-btn').onclick = send;
 </script>
+<script>
+const openChat = document.getElementById("open-chat");
+const chatWindow = document.getElementById("chat-window");
+const closeBtn = document.getElementById("close-chat");
 
+openChat.onclick = () => {
+  chatWindow.style.display =
+    chatWindow.style.display === "flex" ? "none" : "flex";
+};
+
+closeBtn.onclick = () => {
+  chatWindow.style.display = "none";
+};
+</script>
 </body>
 </html>
-```
